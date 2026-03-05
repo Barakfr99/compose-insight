@@ -17,6 +17,7 @@ export type Database = {
       submissions: {
         Row: {
           answer_text: string
+          grade: number | null
           id: string
           paste_count: number
           student_name: string
@@ -26,6 +27,7 @@ export type Database = {
         }
         Insert: {
           answer_text: string
+          grade?: number | null
           id?: string
           paste_count?: number
           student_name: string
@@ -35,6 +37,7 @@ export type Database = {
         }
         Update: {
           answer_text?: string
+          grade?: number | null
           id?: string
           paste_count?: number
           student_name?: string
