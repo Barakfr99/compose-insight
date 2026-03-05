@@ -1,9 +1,22 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { ClipboardPaste, Clock, FileText } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ClipboardPaste, Clock, FileText, Trash2, Copy, Check } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Submission = {
   id: string;
@@ -13,12 +26,15 @@ type Submission = {
   time_spent_seconds: number;
   paste_count: number;
   submitted_at: string;
+  grade: number | null;
 };
 
 type SortMode = "time" | "name";
 
 const Dashboard = () => {
   const [sortMode, setSortMode] = useState<SortMode>("time");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["submissions"],
@@ -46,6 +62,32 @@ const Dashboard = () => {
   const formatMinutes = (seconds: number) => {
     const m = Math.round(seconds / 60);
     return `${m} דקות`;
+  };
+
+  const handleGradeChange = async (id: string, value: string) => {
+    const grade = value === "" ? null : Math.min(100, Math.max(0, parseInt(value) || 0));
+    const { error } = await supabase.from("submissions").update({ grade }).eq("id", id);
+    if (error) {
+      toast({ title: "שגיאה בשמירת הציון", variant: "destructive" });
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["submissions"] });
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from("submissions").delete().eq("id", id);
+    if (error) {
+      toast({ title: "שגיאה במחיקה", variant: "destructive" });
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["submissions"] });
+      toast({ title: "ההגשה נמחקה" });
+    }
+  };
+
+  const handleCopy = async (text: string, id: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   return (
@@ -88,11 +130,70 @@ const Dashboard = () => {
                     <FileText className="h-3.5 w-3.5" />
                     {s.word_count} מילים
                   </span>
+                  {s.grade !== null && (
+                    <span className="text-primary font-semibold">ציון: {s.grade}</span>
+                  )}
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="pt-2 pb-4 border-t border-border mt-2">
+                <div className="pt-2 pb-4 border-t border-border mt-2 space-y-4">
                   <p className="whitespace-pre-wrap leading-relaxed text-foreground/90">{s.answer_text}</p>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    {/* Grade input */}
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm text-muted-foreground whitespace-nowrap">ציון:</label>
+                      <Input
+                        dir="ltr"
+                        type="number"
+                        min={0}
+                        max={100}
+                        placeholder="0-100"
+                        defaultValue={s.grade ?? ""}
+                        className="w-20 h-8 text-center text-sm"
+                        onBlur={(e) => handleGradeChange(s.id, e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
+                      />
+                    </div>
+
+                    {/* Copy button */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-1.5"
+                      onClick={() => handleCopy(s.answer_text, s.id)}
+                    >
+                      {copiedId === s.id ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                      {copiedId === s.id ? "הועתק" : "העתקה"}
+                    </Button>
+
+                    {/* Delete button */}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive">
+                          <Trash2 className="h-3.5 w-3.5" />
+                          מחיקה
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent dir="rtl">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>מחיקת הגשה</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            האם למחוק את ההגשה של {s.student_name}? פעולה זו לא ניתנת לביטול.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="flex gap-2 sm:justify-start">
+                          <AlertDialogCancel>ביטול</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDelete(s.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            מחיקה
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
