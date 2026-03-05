@@ -1,6 +1,6 @@
 const ArticlesPanel = () => {
   return (
-    <div className="p-6 space-y-8 max-w-3xl">
+    <div className="p-6 space-y-8 max-w-3xl text-right">
       {/* Article 2 */}
       <article className="space-y-4">
         <h2 className="text-xl font-bold text-foreground">מאמר 2: &quot;משמעת היא הבעיה, לא הפתרון&quot;</h2>

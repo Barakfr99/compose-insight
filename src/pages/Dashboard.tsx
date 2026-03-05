@@ -49,7 +49,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen p-6 max-w-4xl mx-auto space-y-6 text-right">
       <h1 className="text-2xl font-bold text-foreground">דשבורד מורה – משימת כתיבה: משמעת</h1>
 
       <div className="flex items-center justify-between">
