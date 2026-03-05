@@ -70,16 +70,14 @@ const Index = () => {
         : "text-muted-foreground";
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
+    <div className="min-h-screen flex flex-col lg:flex-row pb-safe">
       {/* Right side - Articles (60%) */}
-      <div className="lg:w-[60%] border-l border-border">
-        <ScrollArea className="h-screen">
-          <ArticlesPanel />
-        </ScrollArea>
+      <div className="lg:w-[60%] lg:border-l border-border lg:h-screen lg:overflow-y-auto">
+        <ArticlesPanel />
       </div>
 
       {/* Left side - Editor (40%) */}
-      <div className="lg:w-[40%] p-6 flex flex-col gap-4 text-right">
+      <div className="lg:w-[40%] p-6 flex flex-col gap-4 text-right lg:h-screen lg:overflow-y-auto">
         <h2 className="text-lg font-semibold text-foreground">כתיבת התשובה</h2>
 
         <Textarea
