@@ -3,7 +3,7 @@ const ArticlesPanel = () => {
     <div className="p-6 space-y-8 max-w-3xl text-right">
       {/* Article 2 */}
       <article className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground">מאמר 2: &quot;משמעת היא הבעיה, לא הפתרון&quot;</h2>
+        <h2 className="text-xl font-bold text-foreground">מאמר 2: <br />&quot;משמעת היא הבעיה, לא הפתרון&quot;</h2>
         <p className="text-sm text-muted-foreground">מאת אלפי קון<sup>(1)</sup></p>
 
         <p className="leading-relaxed text-foreground/90">
@@ -36,7 +36,7 @@ const ArticlesPanel = () => {
 
       {/* Article 3 */}
       <article className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground">מאמר 3: &quot;בעיות משמעת הן בעיות משמעוּת&quot;</h2>
+        <h2 className="text-xl font-bold text-foreground">מאמר 3: <br />&quot;בעיות משמעת הן בעיות משמעוּת&quot;</h2>
         <p className="text-sm text-muted-foreground">מאת יורם הרפז<sup>(1)</sup></p>
         <p className="text-sm text-muted-foreground">להלן קטעים מתוך ריאיון עם פרופ׳ עוז אלמוג וד&quot;ר תמר אלמוג<sup>(2)</sup> על בעיות המשמעת בבתי הספר שלנו.</p>
 
