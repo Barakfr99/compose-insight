@@ -79,7 +79,7 @@ const Index = () => {
       </div>
 
       {/* Left side - Editor (40%) */}
-      <div className="lg:w-[40%] p-6 flex flex-col gap-4">
+      <div className="lg:w-[40%] p-6 flex flex-col gap-4 text-right">
         <h2 className="text-lg font-semibold text-foreground">כתיבת התשובה</h2>
 
         <Textarea
