@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      submissions: {
+        Row: {
+          answer_text: string
+          id: string
+          paste_count: number
+          student_name: string
+          submitted_at: string
+          time_spent_seconds: number
+          word_count: number
+        }
+        Insert: {
+          answer_text: string
+          id?: string
+          paste_count?: number
+          student_name: string
+          submitted_at?: string
+          time_spent_seconds?: number
+          word_count?: number
+        }
+        Update: {
+          answer_text?: string
+          id?: string
+          paste_count?: number
+          student_name?: string
+          submitted_at?: string
+          time_spent_seconds?: number
+          word_count?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
