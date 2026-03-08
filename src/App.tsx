@@ -10,6 +10,7 @@ import Admin from "./pages/Admin";
 import CreateTask from "./pages/CreateTask";
 import TaskPage from "./pages/TaskPage";
 import TaskDashboard from "./pages/TaskDashboard";
+import TaskInstructions from "./pages/TaskInstructions";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/admin/edit/:taskId" element={<CreateTask />} />
           <Route path="/task/:taskId" element={<TaskPage />} />
           <Route path="/task/:taskId/dashboard" element={<TaskDashboard />} />
+          <Route path="/task-instructions" element={<TaskInstructions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

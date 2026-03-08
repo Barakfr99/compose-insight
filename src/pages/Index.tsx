@@ -76,7 +76,7 @@ const Index = () => {
         <Button
           size="lg"
           className="gap-2 text-base px-8 py-3 h-auto"
-          onClick={() => window.open("/task-instructions.html", "_blank")}
+          onClick={() => window.open("/task-instructions", "_blank")}
         >
           <FileText className="h-5 w-5" />
           📝 הנחיות למשימת הכתיבה
