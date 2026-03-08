@@ -28,6 +28,7 @@ const App = () => (
           <Route path="/admin/edit/:taskId" element={<CreateTask />} />
           <Route path="/task/:taskId" element={<TaskPage />} />
           <Route path="/task/:taskId/dashboard" element={<TaskDashboard />} />
+          <Route path="/task-instructions" element={<TaskInstructions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
