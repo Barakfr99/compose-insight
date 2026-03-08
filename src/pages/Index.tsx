@@ -70,7 +70,20 @@ const Index = () => {
         : "text-muted-foreground";
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row pb-safe">
+    <div className="min-h-screen flex flex-col pb-safe">
+      {/* Instructions button - top */}
+      <div className="p-4 border-b border-border bg-primary/5 text-center">
+        <Button
+          size="lg"
+          className="gap-2 text-base px-8 py-3 h-auto"
+          onClick={() => window.open("/task-instructions.html", "_blank")}
+        >
+          <FileText className="h-5 w-5" />
+          📝 הנחיות למשימת הכתיבה
+        </Button>
+      </div>
+
+      <div className="flex-1 flex flex-col lg:flex-row">
       {/* Right side - Articles (60%) */}
       <div className="lg:w-[60%] lg:border-l border-border lg:h-screen lg:overflow-y-auto">
         <ArticlesPanel />
