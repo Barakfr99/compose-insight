@@ -10,6 +10,7 @@ import Admin from "./pages/Admin";
 import CreateTask from "./pages/CreateTask";
 import TaskPage from "./pages/TaskPage";
 import TaskDashboard from "./pages/TaskDashboard";
+import TaskInstructions from "./pages/TaskInstructions";
 
 const queryClient = new QueryClient();
 
