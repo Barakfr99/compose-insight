@@ -1,6 +1,17 @@
+import { toast } from "@/hooks/use-toast";
+
 const ArticlesPanel = () => {
+  const handleCopy = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const selected = window.getSelection()?.toString() || "";
+    const sentences = selected.split(/[.?!׃؟]/).filter(s => s.trim().length > 0);
+    if (sentences.length > 2) {
+      e.preventDefault();
+      toast({ title: "לא ניתן להעתיק", variant: "destructive" });
+    }
+  };
+
   return (
-    <div className="p-6 space-y-8 max-w-3xl text-right">
+    <div className="p-6 space-y-8 max-w-3xl text-right" onCopy={handleCopy}>
       {/* Article 2 */}
       <article className="space-y-4">
         <h2 className="text-xl font-bold text-foreground">מאמר 2: <br />&quot;משמעת היא הבעיה, לא הפתרון&quot;</h2>
