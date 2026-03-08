@@ -6,6 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
+import CreateTask from "./pages/CreateTask";
+import TaskPage from "./pages/TaskPage";
+import TaskDashboard from "./pages/TaskDashboard";
 
 const queryClient = new QueryClient();
 
