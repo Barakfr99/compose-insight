@@ -22,6 +22,7 @@ export type Database = {
           paste_count: number
           student_name: string
           submitted_at: string
+          task_id: string | null
           time_spent_seconds: number
           word_count: number
         }
@@ -32,6 +33,7 @@ export type Database = {
           paste_count?: number
           student_name: string
           submitted_at?: string
+          task_id?: string | null
           time_spent_seconds?: number
           word_count?: number
         }
@@ -42,8 +44,38 @@ export type Database = {
           paste_count?: number
           student_name?: string
           submitted_at?: string
+          task_id?: string | null
           time_spent_seconds?: number
           word_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          title: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          id?: string
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          title?: string
         }
         Relationships: []
       }
