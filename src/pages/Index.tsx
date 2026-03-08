@@ -123,6 +123,8 @@ const Index = () => {
         )}
       </div>
 
+      </div>
+
       {/* Name Modal */}
       <Dialog open={showNameModal} onOpenChange={setShowNameModal}>
         <DialogContent dir="rtl" className="sm:max-w-md">
