@@ -22,6 +22,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/create" element={<CreateTask />} />
+          <Route path="/admin/edit/:taskId" element={<CreateTask />} />
+          <Route path="/task/:taskId" element={<TaskPage />} />
+          <Route path="/task/:taskId/dashboard" element={<TaskDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
