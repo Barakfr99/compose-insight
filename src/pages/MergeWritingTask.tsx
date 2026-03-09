@@ -287,7 +287,7 @@ const MergeWritingTask = () => {
                   <div key={si} className="space-y-3">
                     {section.fields.map((field) => (
                       <div key={field.id} className="space-y-1.5">
-                        <label className="text-sm font-medium text-foreground block">
+                        <label className="text-sm font-medium text-foreground block whitespace-pre-wrap">
                           {field.label}
                         </label>
                         <Input
