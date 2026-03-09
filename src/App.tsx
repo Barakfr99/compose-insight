@@ -31,6 +31,8 @@ const App = () => (
           <Route path="/task/:taskId" element={<TaskPage />} />
           <Route path="/task/:taskId/dashboard" element={<TaskDashboard />} />
           <Route path="/task-instructions" element={<TaskInstructions />} />
+          <Route path="/merge-writing" element={<MergeWritingTask />} />
+          <Route path="/merge-writing/dashboard" element={<MergeWritingDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
