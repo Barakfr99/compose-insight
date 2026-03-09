@@ -1,22 +1,28 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-
-const MERGE_TASK_ID = "merge-writing-basic";
+import { Search, PenLine, Quote, Lightbulb, BookOpen } from "lucide-react";
 
 const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
+
+interface ExerciseField {
+  id: string;
+  label: string;
+}
 
 interface Exercise {
   id: number;
   title: string;
   instruction: string;
   texts: { speaker: string; text: string }[];
-  partA: { label: string; fields: { id: string; placeholder: string }[] }[];
+  partA: { label: string; fields: ExerciseField[] }[];
   template: string;
   isAdvanced?: boolean;
 }
@@ -25,16 +31,16 @@ const exercises: Exercise[] = [
   {
     id: 1,
     title: "תרגיל 1",
-    instruction: "קראו את שני התיאורים. הדגישו בכתום מידע שחוזר על עצמו (גם אם לא באותן מילים בדיוק). הדגישו בוורוד מידע ייחודי שמופיע רק אצל אחד מהם.",
+    instruction: "קראו את שני התיאורים. זהו מידע שחוזר על עצמו (משותף) ומידע ייחודי שמופיע רק אצל אחד מהם.",
     texts: [
       { speaker: "תומר אומר:", text: "\"המורה שלנו מעולה כי היא מסבירה בצורה ברורה. וגם היא תמיד מוכנה לעזור אחרי השיעור.\"" },
       { speaker: "מיכל אומרת:", text: "\"אני אוהבת את המורה כי ההסברים שלה ממש קלים להבנה. ומה שמיוחד שהיא מכניסה הומור לשיעורים.\"" },
     ],
     partA: [
       { label: "שאלות:", fields: [
-        { id: "1_shared", placeholder: "1. איזה מידע משותף לשניהם? (שימו לב - זה לא חייב להיות באותן מילים!)" },
-        { id: "1_unique_tomer", placeholder: "2. מה ייחודי לתומר?" },
-        { id: "1_unique_michal", placeholder: "3. מה ייחודי למיכל?" },
+        { id: "1_shared", label: "איזה מידע משותף לשניהם? (שימו לב - זה לא חייב להיות באותן מילים!)" },
+        { id: "1_unique_tomer", label: "מה ייחודי לתומר?" },
+        { id: "1_unique_michal", label: "מה ייחודי למיכל?" },
       ]},
     ],
     template: "התלמידים אוהבים את המורה מסיבות שונות. _______  (תומר) וכמו כן _______  (מיכל). שניהם חושבים ש_______ (תומר ומיכל), בנוסף, _______ (מיכל).",
@@ -42,16 +48,16 @@ const exercises: Exercise[] = [
   {
     id: 2,
     title: "תרגיל 2 - פורטנייט",
-    instruction: "קראו את שני התיאורים. חפשו מידע על הסיבות שבגללן הילדים אוהבים לשחק. הדגישו בכתום מידע שחוזר על עצמו (גם אם לא באותן מילים בדיוק). הדגישו בוורוד מידע ייחודי שמופיע רק אצל אחד מהם.",
+    instruction: "קראו את שני התיאורים. זהו מידע משותף על הסיבות שבגללן הילדים אוהבים לשחק, ומידע ייחודי שמופיע רק אצל אחד מהם.",
     texts: [
       { speaker: "רועי אומר:", text: "\"אני אוהב לשחק פורטנייט כי יש שם הרבה אקשן מרגש. וגם אפשר לשחק עם חברים באינטרנט ולדבר איתם.\"" },
       { speaker: "נועה אומרת:", text: "\"פורטנייט זה המשחק האהוב עליי בגלל שיש המון קרבות מעניינים. ומה שכיף ממש זה כל הסקינים והריקודים שאפשר לקנות.\"" },
     ],
     partA: [
       { label: "שאלות:", fields: [
-        { id: "2_shared", placeholder: "1. איזה מידע משותף לשניהם? (שימו לב - זה לא חייב להיות באותן מילים!)" },
-        { id: "2_unique_roi", placeholder: "2. מה ייחודי לרועי?" },
-        { id: "2_unique_noa", placeholder: "3. מה ייחודי לנועה?" },
+        { id: "2_shared", label: "איזה מידע משותף לשניהם? (שימו לב - זה לא חייב להיות באותן מילים!)" },
+        { id: "2_unique_roi", label: "מה ייחודי לרועי?" },
+        { id: "2_unique_noa", label: "מה ייחודי לנועה?" },
       ]},
     ],
     template: "פורטנייט הוא משחק אהוב בקרב בני נוער. שחקנים רבים אוהבים לשחק בו מפני ש_______ (רועי) _______  גם _______ (רועי). _______  (נועה) מוסיפים לחוויית המשחק.",
@@ -59,17 +65,17 @@ const exercises: Exercise[] = [
   {
     id: 3,
     title: "תרגיל 3",
-    instruction: "קראו את שני התיאורים. חפשו מידע על התרומה של קריאת ספרים. הדגישו בכתום מידע שחוזר על עצמו (גם אם לא באותן מילים בדיוק). הדגישו בוורוד מידע ייחודי שמופיע רק אצל אחד מהם.",
+    instruction: "קראו את שני התיאורים. זהו מידע משותף על התרומה של קריאת ספרים, ומידע ייחודי שמופיע רק אצל אחד מהם.",
     texts: [
       { speaker: "עומר אומר:", text: "\"אני חושב שכדאי לקרוא ספרים כי זה מרחיב את אוצר המילים שלנו. כשאנחנו קוראים, אנחנו נחשפים למילים חדשות ולומדים איך להשתמש בהן. בנוסף, קריאה משפרת את היכולת שלנו לכתוב יותר טוב. ועוד דבר חשוב שלי הוא שקריאה מפתחת את הדמיון.\"" },
       { speaker: "רחל אומרת:", text: "\"לדעתי, קריאת ספרים היא הרגל מצוין. היא עוזרת לנו ללמוד מילים שלא הכרנו קודם ולהעשיר את השפה שלנו. גם שהכתיבה שלנו משתפרת כשאנחנו קוראים הרבה. ומה שאני הכי אוהבת זה שקריאה מרגיעה אותי ועוזרת לי להפחית מתח.\"" },
     ],
     partA: [
       { label: "שאלות:", fields: [
-        { id: "3_shared_a", placeholder: "1. איזה מידע משותף לשניהם? א." },
-        { id: "3_shared_b", placeholder: "    ב." },
-        { id: "3_unique_omer", placeholder: "2. מה ייחודי לעומר?" },
-        { id: "3_unique_rachel", placeholder: "3. מה ייחודי לרחל?" },
+        { id: "3_shared_a", label: "איזה מידע משותף לשניהם? א." },
+        { id: "3_shared_b", label: "ב." },
+        { id: "3_unique_omer", label: "מה ייחודי לעומר?" },
+        { id: "3_unique_rachel", label: "מה ייחודי לרחל?" },
       ]},
     ],
     template: "לקריאת ספרים יש יתרונות רבים. היא _______ וגם _______ (עומר ורחל). בנוסף, _______ (עומר) ו_______ (רחל) מוסיפים לחשיבות הקריאה.",
@@ -77,19 +83,19 @@ const exercises: Exercise[] = [
   {
     id: 4,
     title: "תרגיל 4",
-    instruction: "קראו את שני התיאורים. חפשו מידע על יתרונות של פעילות ספורטיבית. הדגישו בכתום מידע שחוזר על עצמו (גם אם לא באותן מילים בדיוק). הדגישו בוורוד מידע ייחודי שמופיע רק אצל אחד מהם.",
+    instruction: "קראו את שני התיאורים. זהו מידע משותף על יתרונות של פעילות ספורטיבית, ומידע ייחודי שמופיע רק אצל אחד מהם.",
     texts: [
       { speaker: "דני אומר:", text: "\"אני חושב שספורט זה הדבר הכי חשוב לבני נוער. קודם כל, זה בונה ביטחון עצמי - כשאתה מצליח להשיג יעדים, אתה מרגיש גאה בעצמך. ספורט גם משפר את הבריאות הגופנית ועוזר לשמור על כושר. בנוסף, הוא מלמד אותנו משמעת והתמדה - צריך להתאמן גם כשקשה. ועוד דבר חשוב הוא שספורט מלמד איך לעבוד בצוות - צריך לשתף פעולה עם השחקנים האחרים כדי לנצח.\"" },
       { speaker: "שרה אומרת:", text: "\"לדעתך, פעילות גופנית קבועה היא הכרחית לכל מתבגר. היא תורמת הרבה לבריאות ועוזרת לנו להישאר בכושר טוב. ספורט גם מחזק את המשמעת - אתה לומד להגיע לאימונים גם כשלא בא לך ולהתמיד. בנוסף, מבחינה נפשית זה עוזר - ספורט משחרר מתחים ומפחית לחץ. ועוד יתרון הוא שספורט מפתח מנהיגות - אתה לומד לקחת אחריות ולהוביל את הקבוצה.\"" },
     ],
     partA: [
       { label: "שאלות:", fields: [
-        { id: "4_shared_a", placeholder: "1. איזה מידע משותף לשניהם? א." },
-        { id: "4_shared_b", placeholder: "    ב." },
-        { id: "4_unique_dani_a", placeholder: "2. מידע ייחודי לדני? א." },
-        { id: "4_unique_dani_b", placeholder: "    ב." },
-        { id: "4_unique_sara_a", placeholder: "3. מידע ייחודי לשרה? א." },
-        { id: "4_unique_sara_b", placeholder: "    ב." },
+        { id: "4_shared_a", label: "איזה מידע משותף לשניהם? א." },
+        { id: "4_shared_b", label: "ב." },
+        { id: "4_unique_dani_a", label: "מידע ייחודי לדני? א." },
+        { id: "4_unique_dani_b", label: "ב." },
+        { id: "4_unique_sara_a", label: "מידע ייחודי לשרה? א." },
+        { id: "4_unique_sara_b", label: "ב." },
       ]},
     ],
     template: "לספורט יש השפעות חיוביות רבות על בני נוער. הוא _______ וגם _______ (דני ושרה). כן, כמו _______ (דני). וכן _______ בנוסף, _______ וגם _______ (שרה).",
@@ -97,7 +103,7 @@ const exercises: Exercise[] = [
   {
     id: 5,
     title: "תרגיל 5 - תרגיל מסכם",
-    instruction: "קראו את שני המאמרים. חפשו מידע על ההשלכות של שימוש רב במסכים. הדגישו בכתום מידע שחוזר (גם אם לא באותן מילים). הדגישו בוורוד מידע ייחודי. לאחר מכן השלימו את המטלות.",
+    instruction: "קראו את שני המאמרים. זהו מידע משותף על ההשלכות של שימוש רב במסכים, ומידע ייחודי שמופיע רק באחד מהמאמרים. לאחר מכן השלימו את המטלות.",
     isAdvanced: true,
     texts: [
       { speaker: "מאמר 1 - ד\"ר אורי רוזן (2024): \"השפעות השימוש המופרז במסכים על בריאות בני נוער\"", text: "השימוש הממושך במכשירים דיגיטליים הפך לחלק בלתי נפרד מחיי המתבגרים בעשור האחרון. בני נוער רבים מבלים שעות ארוכות מול מסכים, דבר המשפיע על בריאותם הגופנית. אחת ההשלכות המשמעותיות היא פגיעה ביציבה ובעמוד השדרה. ישיבה ממושכת עם ראש כפוף כלפי מטה גורמת ללחץ על צוואר והגב, מה שעלול להוביל לכאבים כרוניים ובעיות שלד-שריר בגיל צעיר. בנוסף, חשיפה למסכים בשעות הערב מפריעה לתהליכי השינה הטבעיים. האור הכחול הנפלט מהמסכים מדכא את ייצור המלטונין, ההורמון האחראי על ויסות השינה, מה שגורם לקשיי הירדמות ולאיכות שינה ירודה. כמו כן, שימוש מרובה במכשירים דיגיטליים פוגע ביכולת הריכוז וההתמקדות. המעבר המתמיד בין אפליקציות ותכנים שונים מקשה על המוח לשמור על קשב ממושך, דבר המשפיע לרעה על הביצועים הלימודיים. מומחים ממליצים להגביל את זמן המסך לשעתיים ביום, לכל היותר, ולהימנע משימוש במכשירים לפחות שעה לפני השינה." },
@@ -105,11 +111,11 @@ const exercises: Exercise[] = [
     ],
     partA: [
       { label: "שאלות:", fields: [
-        { id: "5_shared_a", placeholder: "1. איזה מידע משותף לשני המאמרים? (לפחות 2 מתוך 3) א." },
-        { id: "5_shared_b", placeholder: "    ב." },
-        { id: "5_shared_c", placeholder: "    ג. (אופציונלי)" },
-        { id: "5_unique_rosen", placeholder: "2. מה ייחודי למאמר של רוזן?" },
-        { id: "5_unique_cohen", placeholder: "3. מה ייחודי למאמר של כהן?" },
+        { id: "5_shared_a", label: "איזה מידע משותף לשני המאמרים? (לפחות 2 מתוך 3) א." },
+        { id: "5_shared_b", label: "ב." },
+        { id: "5_shared_c", label: "ג. (אופציונלי)" },
+        { id: "5_unique_rosen", label: "מה ייחודי למאמר של רוזן?" },
+        { id: "5_unique_cohen", label: "מה ייחודי למאמר של כהן?" },
       ]},
     ],
     template: `הסבר איך לבנות את הפסקה:
@@ -127,6 +133,11 @@ const exercises: Exercise[] = [
 להוספת מידע: יתרה מכך, נוסף על כך
 מקורות: (שם, שנה ושם, שנה)`,
   },
+];
+
+const speakerColors = [
+  "bg-blue-50 border-blue-200",
+  "bg-emerald-50 border-emerald-200",
 ];
 
 const MergeWritingTask = () => {
@@ -161,6 +172,23 @@ const MergeWritingTask = () => {
 
   const hasContent = Object.values(answers).some(v => v.trim().length > 0);
 
+  // Calculate progress
+  const progress = useMemo(() => {
+    let filled = 0;
+    let total = 0;
+    exercises.forEach(ex => {
+      ex.partA.forEach(section => {
+        section.fields.forEach(field => {
+          total++;
+          if (answers[field.id]?.trim()) filled++;
+        });
+      });
+      total++; // writing part
+      if (answers[`writing_${ex.id}`]?.trim()) filled++;
+    });
+    return total > 0 ? Math.round((filled / total) * 100) : 0;
+  }, [answers]);
+
   const handleSubmit = async () => {
     if (!studentName.trim()) return;
     setIsSubmitting(true);
@@ -187,64 +215,114 @@ const MergeWritingTask = () => {
     toast({ title: "המשימה הוגשה בהצלחה ✅" });
   };
 
+  const getWordCountColor = (count: number) => {
+    if (count === 0) return "text-muted-foreground";
+    if (count >= 100 && count <= 200) return "text-green-600";
+    if (count > 200) return "text-destructive";
+    return "text-muted-foreground";
+  };
+
   return (
     <div className="min-h-screen bg-background py-6 px-4" dir="rtl">
       <div className="max-w-3xl mx-auto space-y-8">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-foreground">דף עבודה: למידת כתיבה ממזגת</h1>
-          <p className="text-muted-foreground text-sm">מלאו את כל התרגילים ולחצו על "הגשה" בתחתית העמוד</p>
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium">
+            <BookOpen size={16} />
+            <span>דף עבודה</span>
+          </div>
+          <h1 className="text-3xl font-bold text-foreground">למידת כתיבה ממזגת</h1>
+          <p className="text-muted-foreground text-sm">מלאו את כל התרגילים ולחצו על &quot;הגשה&quot; בתחתית העמוד</p>
+        </div>
+
+        {/* Progress */}
+        <div className="space-y-1.5">
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>התקדמות</span>
+            <span>{progress}%</span>
+          </div>
+          <Progress value={progress} className="h-2" />
         </div>
 
         {/* Exercises */}
         {exercises.map((ex) => (
-          <Card key={ex.id} className="overflow-hidden">
-            <div className="bg-primary/10 px-5 py-3 border-b border-border">
-              <h2 className="text-lg font-bold text-foreground">{ex.title}</h2>
+          <Card key={ex.id} className="overflow-hidden shadow-sm">
+            {/* Exercise header */}
+            <div className="bg-primary px-5 py-3 flex items-center gap-3">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary-foreground text-primary font-bold text-sm shrink-0">
+                {ex.id}
+              </span>
+              <h2 className="text-lg font-bold text-primary-foreground">{ex.title}</h2>
             </div>
-            <CardContent className="p-5 space-y-5">
+
+            <CardContent className="p-5 space-y-6">
               {/* Instruction */}
-              <p className="text-sm text-muted-foreground leading-relaxed bg-muted/50 p-3 rounded-md">
-                <strong>הוראה: </strong>{ex.instruction}
-              </p>
+              <div className="flex gap-3 items-start bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                <Lightbulb size={20} className="text-amber-500 shrink-0 mt-0.5" />
+                <p className="text-sm text-foreground leading-relaxed">{ex.instruction}</p>
+              </div>
 
               {/* Texts */}
               <div className="space-y-3">
                 {ex.texts.map((t, i) => (
-                  <div key={i} className={`p-4 rounded-lg border ${ex.isAdvanced ? 'bg-card' : 'bg-muted/30'}`}>
-                    <p className="font-semibold text-foreground text-sm mb-2">{t.speaker}</p>
-                    <p className="text-foreground/90 leading-relaxed text-sm whitespace-pre-wrap">{t.text}</p>
+                  <div key={i} className={`p-4 rounded-lg border ${speakerColors[i % 2]}`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Quote size={16} className="text-muted-foreground shrink-0" />
+                      <p className="font-semibold text-foreground text-sm">{t.speaker}</p>
+                    </div>
+                    <p className="text-foreground/90 leading-relaxed text-sm whitespace-pre-wrap pr-6">{t.text}</p>
                   </div>
                 ))}
               </div>
 
+              <Separator />
+
               {/* Part A - Identification */}
-              <div className="space-y-3">
-                <h3 className="font-bold text-foreground">חלק א': זיהוי</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Search size={18} className="text-primary" />
+                  <h3 className="font-bold text-foreground">חלק א&apos;: זיהוי</h3>
+                </div>
                 {ex.partA.map((section, si) => (
-                  <div key={si} className="space-y-2">
+                  <div key={si} className="space-y-3">
                     {section.fields.map((field) => (
-                      <Input
-                        key={field.id}
-                        dir="rtl"
-                        placeholder={field.placeholder}
-                        value={answers[field.id] || ""}
-                        onChange={(e) => updateAnswer(field.id, e.target.value)}
-                        onPaste={handlePaste}
-                        disabled={isSubmitted}
-                        className="text-sm"
-                      />
+                      <div key={field.id} className="space-y-1.5">
+                        <label className="text-sm font-medium text-foreground block">
+                          {field.label}
+                        </label>
+                        <Input
+                          dir="rtl"
+                          placeholder="הקלידו תשובה..."
+                          value={answers[field.id] || ""}
+                          onChange={(e) => updateAnswer(field.id, e.target.value)}
+                          onPaste={handlePaste}
+                          disabled={isSubmitted}
+                          className="text-sm bg-muted/30 focus:bg-background transition-colors"
+                        />
+                      </div>
                     ))}
                   </div>
                 ))}
               </div>
 
+              <Separator />
+
               {/* Part B - Writing */}
-              <div className="space-y-3">
-                <h3 className="font-bold text-foreground">חלק ב': כתיבה</h3>
-                <div className="bg-muted/40 p-3 rounded-md text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                  <strong>תבנית עזרה: </strong>{ex.template}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <PenLine size={18} className="text-primary" />
+                  <h3 className="font-bold text-foreground">חלק ב&apos;: כתיבה</h3>
                 </div>
+
+                {/* Template tip box */}
+                <div className="border-r-4 border-primary bg-primary/5 p-4 rounded-lg rounded-r-none">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb size={16} className="text-primary" />
+                    <span className="text-sm font-semibold text-primary">תבנית עזרה</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{ex.template}</p>
+                </div>
+
                 <Textarea
                   dir="rtl"
                   placeholder="כתבו את הפסקה הממזגת כאן..."
@@ -252,9 +330,9 @@ const MergeWritingTask = () => {
                   onChange={(e) => updateAnswer(`writing_${ex.id}`, e.target.value)}
                   onPaste={handlePaste}
                   disabled={isSubmitted}
-                  className="min-h-[120px] text-sm leading-relaxed resize-none"
+                  className="min-h-[140px] text-sm leading-relaxed resize-none bg-muted/30 focus:bg-background transition-colors"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className={`text-xs font-medium ${getWordCountColor(countWords(answers[`writing_${ex.id}`] || ""))}`}>
                   {countWords(answers[`writing_${ex.id}`] || "")} מילים
                 </p>
               </div>
@@ -268,7 +346,7 @@ const MergeWritingTask = () => {
             size="lg"
             onClick={() => setShowNameModal(true)}
             disabled={isSubmitted || !hasContent}
-            className="px-12"
+            className="px-12 text-base"
           >
             {isSubmitted ? "הוגש ✅" : "הגשה"}
           </Button>
