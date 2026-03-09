@@ -56,8 +56,10 @@ const Admin = () => {
     },
   });
 
+  const PUBLISHED_ORIGIN = "https://pen-pal-portal.lovable.app";
+
   const handleShare = async (taskId: string) => {
-    const url = `${window.location.origin}/task/${taskId}`;
+    const url = `${PUBLISHED_ORIGIN}/task/${taskId}`;
     await navigator.clipboard.writeText(url);
     toast({ title: "הקישור הועתק ללוח" });
   };
