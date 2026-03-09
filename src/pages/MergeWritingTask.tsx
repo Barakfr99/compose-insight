@@ -197,6 +197,7 @@ const MergeWritingTask = () => {
     const { error } = await supabase.from("submissions").insert({
       student_name: studentName.trim(),
       answer_text: JSON.stringify(answers),
+      task_type: "merge_writing" as any,
       word_count: totalWordCount,
       time_spent_seconds: timeSpent,
       paste_count: pasteCount,
