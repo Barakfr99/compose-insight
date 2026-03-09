@@ -49,10 +49,10 @@ const MergeWritingDashboard = () => {
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["merge-writing-submissions"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase
         .from("submissions")
-        .select("*")
-        .eq("task_type" as string, "merge_writing" as string)
+        .select("*") as any)
+        .eq("task_type", "merge_writing")
         .order("submitted_at", { ascending: false });
       if (error) throw error;
       return data;
