@@ -123,7 +123,7 @@ const MergeWritingDashboard = () => {
   return (
     <div className="min-h-screen p-6 max-w-4xl mx-auto space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">דשבורד - {localStorage.getItem("merge_task_title") || "כתיבה ממזגת"}</h1>
+        <h1 className="text-2xl font-bold text-foreground">דשבורד - {mergeTitle}</h1>
         <Button variant="outline" onClick={() => navigate("/admin")} className="gap-2">
           <ArrowRight className="h-4 w-4" />
           חזרה
