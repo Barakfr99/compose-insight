@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useMergeSettings } from "@/hooks/use-merge-settings";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,6 +57,8 @@ const MergeWritingDashboard = () => {
   const queryClient = useQueryClient();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [grades, setGrades] = useState<Record<string, string>>({});
+  const { data: mergeSettings } = useMergeSettings();
+  const mergeTitle = mergeSettings?.title || "כתיבה ממזגת";
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["merge-writing-submissions"],
@@ -123,7 +126,7 @@ const MergeWritingDashboard = () => {
   return (
     <div className="min-h-screen p-6 max-w-4xl mx-auto space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">דשבורד - {localStorage.getItem("merge_task_title") || "כתיבה ממזגת"}</h1>
+        <h1 className="text-2xl font-bold text-foreground">דשבורד - {mergeTitle}</h1>
         <Button variant="outline" onClick={() => navigate("/admin")} className="gap-2">
           <ArrowRight className="h-4 w-4" />
           חזרה

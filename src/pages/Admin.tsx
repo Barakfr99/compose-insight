@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMergeSettings, updateMergeSetting } from "@/hooks/use-merge-settings";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,17 +13,15 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const MERGE_TASK_TITLE_KEY = "merge_task_title";
-const MERGE_TASK_DESC_KEY = "merge_task_desc";
-
 const Admin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
   const [editingMerge, setEditingMerge] = useState(false);
-  const [mergeTitle, setMergeTitle] = useState(() => localStorage.getItem(MERGE_TASK_TITLE_KEY) || "משימת כתיבה ממזגת");
-  const [mergeDesc, setMergeDesc] = useState(() => localStorage.getItem(MERGE_TASK_DESC_KEY) || "משימה קבועה עם 5 תרגילים");
+  const { data: mergeSettings } = useMergeSettings();
+  const mergeTitle = mergeSettings?.title || "משימת כתיבה ממזגת";
+  const mergeDesc = mergeSettings?.desc || "משימה קבועה עם 5 תרגילים";
   const [mergeTitleDraft, setMergeTitleDraft] = useState("");
   const [mergeDescDraft, setMergeDescDraft] = useState("");
 
@@ -123,11 +122,12 @@ const Admin = () => {
                     className="h-8 text-sm"
                   />
                   <div className="flex items-center gap-2">
-                    <Button size="sm" variant="outline" className="gap-1" onClick={() => {
-                      setMergeTitle(mergeTitleDraft.trim() || mergeTitle);
-                      setMergeDesc(mergeDescDraft.trim() || mergeDesc);
-                      localStorage.setItem(MERGE_TASK_TITLE_KEY, mergeTitleDraft.trim() || mergeTitle);
-                      localStorage.setItem(MERGE_TASK_DESC_KEY, mergeDescDraft.trim() || mergeDesc);
+                    <Button size="sm" variant="outline" className="gap-1" onClick={async () => {
+                      const newTitle = mergeTitleDraft.trim() || mergeTitle;
+                      const newDesc = mergeDescDraft.trim() || mergeDesc;
+                      await updateMergeSetting("merge_task_title", newTitle);
+                      await updateMergeSetting("merge_task_desc", newDesc);
+                      queryClient.invalidateQueries({ queryKey: ["merge-settings"] });
                       setEditingMerge(false);
                       toast({ title: "השינויים נשמרו" });
                     }}>
