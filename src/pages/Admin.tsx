@@ -99,6 +99,10 @@ const Admin = () => {
               <p className="text-xs text-muted-foreground">משימה קבועה עם 5 תרגילים</p>
             </div>
             <div className="flex items-center gap-1.5">
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.open("/merge-writing", "_blank")}>
+                <Eye className="h-3.5 w-3.5" />
+                תצוגה מקדימה
+              </Button>
               <Button variant="outline" size="sm" className="gap-1.5" onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/merge-writing`);
                 toast({ title: "הקישור הועתק ללוח" });
