@@ -90,6 +90,31 @@ const Admin = () => {
         </Button>
       </div>
 
+      {/* Merge Writing Task - Fixed card */}
+      <Card className="bg-primary/5 border-primary/20">
+        <CardContent className="p-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-foreground">📝 משימת כתיבה ממזגת</h3>
+              <p className="text-xs text-muted-foreground">משימה קבועה עם 5 תרגילים</p>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => {
+                navigator.clipboard.writeText(`${window.location.origin}/merge-writing`);
+                toast({ title: "הקישור הועתק ללוח" });
+              }}>
+                <Share2 className="h-3.5 w-3.5" />
+                שיתוף
+              </Button>
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => navigate("/merge-writing/dashboard")}>
+                <BarChart3 className="h-3.5 w-3.5" />
+                דשבורד
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {isLoading ? (
         <p className="text-muted-foreground">טוען...</p>
       ) : tasks.length === 0 ? (
