@@ -12,11 +12,19 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+const MERGE_TASK_TITLE_KEY = "merge_task_title";
+const MERGE_TASK_DESC_KEY = "merge_task_desc";
+
 const Admin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+  const [editingMerge, setEditingMerge] = useState(false);
+  const [mergeTitle, setMergeTitle] = useState(() => localStorage.getItem(MERGE_TASK_TITLE_KEY) || "משימת כתיבה ממזגת");
+  const [mergeDesc, setMergeDesc] = useState(() => localStorage.getItem(MERGE_TASK_DESC_KEY) || "משימה קבועה עם 5 תרגילים");
+  const [mergeTitleDraft, setMergeTitleDraft] = useState("");
+  const [mergeDescDraft, setMergeDescDraft] = useState("");
 
   const { data: tasks = [], isLoading } = useQuery({
     queryKey: ["tasks"],
