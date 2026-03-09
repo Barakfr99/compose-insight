@@ -167,6 +167,10 @@ const Admin = () => {
                   {/* Actions */}
                   {renamingId !== task.id && (
                     <div className="flex items-center gap-1.5">
+                      <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.open(`/task/${task.id}`, "_blank")}>
+                        <Eye className="h-3.5 w-3.5" />
+                        תצוגה מקדימה
+                      </Button>
                       <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleShare(task.id)}>
                         <Share2 className="h-3.5 w-3.5" />
                         שיתוף
