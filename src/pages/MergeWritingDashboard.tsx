@@ -219,6 +219,29 @@ const MergeWritingDashboard = () => {
                         <Button size="sm" onClick={() => handleGrade(sub.id)}>
                           שמור ציון
                         </Button>
+                        <div className="flex-1" />
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="destructive" className="gap-1">
+                              <Trash2 className="h-3.5 w-3.5" />
+                              מחק
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent dir="rtl">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>מחיקת הגשה</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                האם למחוק את ההגשה של {sub.student_name}? פעולה זו לא ניתנת לביטול.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter className="flex gap-2 sm:justify-start">
+                              <AlertDialogCancel>ביטול</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(sub.id)}>
+                                מחק
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   )}
