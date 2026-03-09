@@ -11,6 +11,8 @@ import CreateTask from "./pages/CreateTask";
 import TaskPage from "./pages/TaskPage";
 import TaskDashboard from "./pages/TaskDashboard";
 import TaskInstructions from "./pages/TaskInstructions";
+import MergeWritingTask from "./pages/MergeWritingTask";
+import MergeWritingDashboard from "./pages/MergeWritingDashboard";
 
 const queryClient = new QueryClient();
 
