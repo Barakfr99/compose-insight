@@ -23,6 +23,7 @@ export type Database = {
           student_name: string
           submitted_at: string
           task_id: string | null
+          task_type: string
           time_spent_seconds: number
           word_count: number
         }
@@ -34,6 +35,7 @@ export type Database = {
           student_name: string
           submitted_at?: string
           task_id?: string | null
+          task_type?: string
           time_spent_seconds?: number
           word_count?: number
         }
@@ -45,6 +47,7 @@ export type Database = {
           student_name?: string
           submitted_at?: string
           task_id?: string | null
+          task_type?: string
           time_spent_seconds?: number
           word_count?: number
         }

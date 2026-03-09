@@ -49,21 +49,13 @@ const MergeWritingDashboard = () => {
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["merge-writing-submissions"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase
         .from("submissions")
-        .select("*")
-        .is("task_id", null)
+        .select("*") as any)
+        .eq("task_type", "merge_writing")
         .order("submitted_at", { ascending: false });
       if (error) throw error;
-      // Filter only JSON answers (merge writing submissions)
-      return data.filter((s) => {
-        try {
-          const parsed = JSON.parse(s.answer_text);
-          return typeof parsed === "object" && !Array.isArray(parsed);
-        } catch {
-          return false;
-        }
-      });
+      return data;
     },
   });
 

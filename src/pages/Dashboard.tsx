@@ -39,9 +39,10 @@ const Dashboard = () => {
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["submissions"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase
         .from("submissions")
-        .select("*")
+        .select("*") as any)
+        .eq("task_type", "default")
         .order("submitted_at", { ascending: false });
       if (error) throw error;
       return data as Submission[];

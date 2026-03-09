@@ -194,9 +194,10 @@ const MergeWritingTask = () => {
     setIsSubmitting(true);
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
 
-    const { error } = await supabase.from("submissions").insert({
+    const { error } = await (supabase.from("submissions") as any).insert({
       student_name: studentName.trim(),
       answer_text: JSON.stringify(answers),
+      task_type: "merge_writing",
       word_count: totalWordCount,
       time_spent_seconds: timeSpent,
       paste_count: pasteCount,
