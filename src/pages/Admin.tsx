@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Share2, BarChart3, Pencil, Trash2, Check, X } from "lucide-react";
+import { Plus, Share2, BarChart3, Pencil, Trash2, Check, X, Eye } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -99,6 +99,10 @@ const Admin = () => {
               <p className="text-xs text-muted-foreground">משימה קבועה עם 5 תרגילים</p>
             </div>
             <div className="flex items-center gap-1.5">
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.open("/merge-writing", "_blank")}>
+                <Eye className="h-3.5 w-3.5" />
+                תצוגה מקדימה
+              </Button>
               <Button variant="outline" size="sm" className="gap-1.5" onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/merge-writing`);
                 toast({ title: "הקישור הועתק ללוח" });
@@ -163,6 +167,10 @@ const Admin = () => {
                   {/* Actions */}
                   {renamingId !== task.id && (
                     <div className="flex items-center gap-1.5">
+                      <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.open(`/task/${task.id}`, "_blank")}>
+                        <Eye className="h-3.5 w-3.5" />
+                        תצוגה מקדימה
+                      </Button>
                       <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleShare(task.id)}>
                         <Share2 className="h-3.5 w-3.5" />
                         שיתוף
