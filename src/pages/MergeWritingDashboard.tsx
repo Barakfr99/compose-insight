@@ -85,6 +85,16 @@ const MergeWritingDashboard = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from("submissions").delete().eq("id", id);
+    if (error) {
+      toast({ title: "שגיאה במחיקה", variant: "destructive" });
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["merge-writing-submissions"] });
+      toast({ title: "ההגשה נמחקה" });
+    }
+  };
+
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("he-IL", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
