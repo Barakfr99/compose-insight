@@ -57,6 +57,8 @@ const MergeWritingDashboard = () => {
   const queryClient = useQueryClient();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [grades, setGrades] = useState<Record<string, string>>({});
+  const { data: mergeSettings } = useMergeSettings();
+  const mergeTitle = mergeSettings?.title || "כתיבה ממזגת";
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["merge-writing-submissions"],

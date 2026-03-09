@@ -149,6 +149,8 @@ const MergeWritingTask = () => {
   const [studentName, setStudentName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const startTimeRef = useRef(Date.now());
+  const { data: mergeSettings } = useMergeSettings();
+  const mergeTitle = mergeSettings?.title || "למידת כתיבה ממזגת";
 
   const updateAnswer = (key: string, value: string) => {
     setAnswers(prev => ({ ...prev, [key]: value }));
