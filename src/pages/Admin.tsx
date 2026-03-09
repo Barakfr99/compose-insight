@@ -56,8 +56,10 @@ const Admin = () => {
     },
   });
 
+  const PUBLISHED_ORIGIN = "https://pen-pal-portal.lovable.app";
+
   const handleShare = async (taskId: string) => {
-    const url = `${window.location.origin}/task/${taskId}`;
+    const url = `${PUBLISHED_ORIGIN}/task/${taskId}`;
     await navigator.clipboard.writeText(url);
     toast({ title: "הקישור הועתק ללוח" });
   };
@@ -152,7 +154,7 @@ const Admin = () => {
                   תצוגה מקדימה
                 </Button>
                 <Button variant="outline" size="sm" className="gap-1.5" onClick={() => {
-                  navigator.clipboard.writeText(`${window.location.origin}/merge-writing`);
+                  navigator.clipboard.writeText("https://pen-pal-portal.lovable.app/merge-writing");
                   toast({ title: "הקישור הועתק ללוח" });
                 }}>
                   <Share2 className="h-3.5 w-3.5" />
