@@ -5,7 +5,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { ChevronDown, ChevronUp, ArrowRight, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useNavigate } from "react-router-dom";
 
 const exerciseLabels: Record<number, string> = {
@@ -71,6 +82,16 @@ const MergeWritingDashboard = () => {
     } else {
       queryClient.invalidateQueries({ queryKey: ["merge-writing-submissions"] });
       toast({ title: "ציון נשמר" });
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from("submissions").delete().eq("id", id);
+    if (error) {
+      toast({ title: "שגיאה במחיקה", variant: "destructive" });
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["merge-writing-submissions"] });
+      toast({ title: "ההגשה נמחקה" });
     }
   };
 
@@ -198,6 +219,29 @@ const MergeWritingDashboard = () => {
                         <Button size="sm" onClick={() => handleGrade(sub.id)}>
                           שמור ציון
                         </Button>
+                        <div className="flex-1" />
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="destructive" className="gap-1">
+                              <Trash2 className="h-3.5 w-3.5" />
+                              מחק
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent dir="rtl">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>מחיקת הגשה</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                האם למחוק את ההגשה של {sub.student_name}? פעולה זו לא ניתנת לביטול.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter className="flex gap-2 sm:justify-start">
+                              <AlertDialogCancel>ביטול</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(sub.id)}>
+                                מחק
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   )}
