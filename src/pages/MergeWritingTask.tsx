@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useMergeSettings } from "@/hooks/use-merge-settings";
 import { Search, PenLine, Quote, Lightbulb, BookOpen } from "lucide-react";
 
 const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
