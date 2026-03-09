@@ -42,7 +42,7 @@ const Dashboard = () => {
       const { data, error } = await supabase
         .from("submissions")
         .select("*")
-        .eq("task_type" as any, "default")
+        .eq("task_type" as string, "default" as string)
         .order("submitted_at", { ascending: false });
       if (error) throw error;
       return data as Submission[];
