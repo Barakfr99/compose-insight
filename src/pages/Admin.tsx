@@ -12,11 +12,19 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+const MERGE_TASK_TITLE_KEY = "merge_task_title";
+const MERGE_TASK_DESC_KEY = "merge_task_desc";
+
 const Admin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+  const [editingMerge, setEditingMerge] = useState(false);
+  const [mergeTitle, setMergeTitle] = useState(() => localStorage.getItem(MERGE_TASK_TITLE_KEY) || "משימת כתיבה ממזגת");
+  const [mergeDesc, setMergeDesc] = useState(() => localStorage.getItem(MERGE_TASK_DESC_KEY) || "משימה קבועה עם 5 תרגילים");
+  const [mergeTitleDraft, setMergeTitleDraft] = useState("");
+  const [mergeDescDraft, setMergeDescDraft] = useState("");
 
   const { data: tasks = [], isLoading } = useQuery({
     queryKey: ["tasks"],
@@ -95,26 +103,75 @@ const Admin = () => {
         <CardContent className="p-4">
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-foreground">📝 משימת כתיבה ממזגת</h3>
-              <p className="text-xs text-muted-foreground">משימה קבועה עם 5 תרגילים</p>
+              {editingMerge ? (
+                <div className="space-y-2">
+                  <Input
+                    dir="rtl"
+                    value={mergeTitleDraft}
+                    onChange={(e) => setMergeTitleDraft(e.target.value)}
+                    placeholder="שם המשימה"
+                    className="h-8 text-sm"
+                    autoFocus
+                  />
+                  <Input
+                    dir="rtl"
+                    value={mergeDescDraft}
+                    onChange={(e) => setMergeDescDraft(e.target.value)}
+                    placeholder="תיאור קצר"
+                    className="h-8 text-sm"
+                  />
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" variant="outline" className="gap-1" onClick={() => {
+                      setMergeTitle(mergeTitleDraft.trim() || mergeTitle);
+                      setMergeDesc(mergeDescDraft.trim() || mergeDesc);
+                      localStorage.setItem(MERGE_TASK_TITLE_KEY, mergeTitleDraft.trim() || mergeTitle);
+                      localStorage.setItem(MERGE_TASK_DESC_KEY, mergeDescDraft.trim() || mergeDesc);
+                      setEditingMerge(false);
+                      toast({ title: "השינויים נשמרו" });
+                    }}>
+                      <Check className="h-3.5 w-3.5" />
+                      שמור
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => setEditingMerge(false)}>
+                      <X className="h-3.5 w-3.5" />
+                      ביטול
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h3 className="font-semibold text-foreground">📝 {mergeTitle}</h3>
+                  <p className="text-xs text-muted-foreground">{mergeDesc}</p>
+                </>
+              )}
             </div>
-            <div className="flex items-center gap-1.5">
-              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.open("/merge-writing", "_blank")}>
-                <Eye className="h-3.5 w-3.5" />
-                תצוגה מקדימה
-              </Button>
-              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => {
-                navigator.clipboard.writeText(`${window.location.origin}/merge-writing`);
-                toast({ title: "הקישור הועתק ללוח" });
-              }}>
-                <Share2 className="h-3.5 w-3.5" />
-                שיתוף
-              </Button>
-              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => navigate("/merge-writing/dashboard")}>
-                <BarChart3 className="h-3.5 w-3.5" />
-                דשבורד
-              </Button>
-            </div>
+            {!editingMerge && (
+              <div className="flex items-center gap-1.5">
+                <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.open("/merge-writing", "_blank")}>
+                  <Eye className="h-3.5 w-3.5" />
+                  תצוגה מקדימה
+                </Button>
+                <Button variant="outline" size="sm" className="gap-1.5" onClick={() => {
+                  navigator.clipboard.writeText(`${window.location.origin}/merge-writing`);
+                  toast({ title: "הקישור הועתק ללוח" });
+                }}>
+                  <Share2 className="h-3.5 w-3.5" />
+                  שיתוף
+                </Button>
+                <Button variant="outline" size="sm" className="gap-1.5" onClick={() => navigate("/merge-writing/dashboard")}>
+                  <BarChart3 className="h-3.5 w-3.5" />
+                  דשבורד
+                </Button>
+                <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => {
+                  setMergeTitleDraft(mergeTitle);
+                  setMergeDescDraft(mergeDesc);
+                  setEditingMerge(true);
+                }}>
+                  <Pencil className="h-3.5 w-3.5" />
+                  עריכה
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
