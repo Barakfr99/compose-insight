@@ -99,9 +99,10 @@ const allSteps = buildSteps();
 
 interface GrammarRootsTaskProps {
   taskId: string;
+  taskTitle: string;
 }
 
-const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
+const GrammarRootsTask = ({ taskId, taskTitle }: GrammarRootsTaskProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [pasteCount, setPasteCount] = useState(0);
@@ -520,7 +521,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
               <BookOpen size={16} />
               <span>תרגול דקדוק</span>
             </div>
-            <h1 className="text-3xl font-bold text-foreground">זיהוי שורשים ובניינים</h1>
+            <h1 className="text-3xl font-bold text-foreground">{taskTitle}</h1>
             <p className="text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed">
               במשימה זו תתרגלו זיהוי שורשים ובניינים במילים שנכתבות ונשמעות אותו הדבר אך יש להן משמעויות שונות. בנוסף, תתרגלו מציאת יוצא הדופן מבחינת הגזרה.
             </p>

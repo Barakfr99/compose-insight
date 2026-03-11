@@ -12,9 +12,10 @@ const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).le
 
 interface DisciplineTaskProps {
   taskId: string;
+  taskTitle: string;
 }
 
-const DisciplineTask = ({ taskId }: DisciplineTaskProps) => {
+const DisciplineTask = ({ taskId, taskTitle }: DisciplineTaskProps) => {
   const [answerText, setAnswerText] = useState("");
   const [pasteCount, setPasteCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
