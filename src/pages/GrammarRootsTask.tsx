@@ -571,7 +571,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
       case "exercise1":
         return renderOddOneOut(
           "תרגיל 1: מצא את הפועל יוצא הדופן",
-          "מצא את הפועל שהשורש שלו שונה מהאחרים מבחינת הגזרה",
+          "בכל שאלה יש 4 מילים. לשלוש מהן שורש מאותה גזרה (למשל: כולן נל\"א או כולן נל\"ה). מצאו את המילה ששורשה שייך לגזרה אחרת.",
           exercise1Questions,
           "ex1"
         );
@@ -579,7 +579,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
       case "exercise2":
         return renderOddOneOut(
           "תרגיל 2: מצא את השם יוצא הדופן",
-          "מצא את השם שהשורש שלו שונה מהאחרים מבחינת הגזרה",
+          "בכל שאלה יש 4 שמות פעולה. לשלושה מהם שורש מאותה גזרה. מצאו את השם ששורשו שייך לגזרה אחרת.",
           exercise2Questions,
           "ex2"
         );
