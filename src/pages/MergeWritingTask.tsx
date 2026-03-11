@@ -145,7 +145,7 @@ interface MergeWritingTaskProps {
   taskTitle: string;
 }
 
-const MergeWritingTask = ({ taskId }: MergeWritingTaskProps) => {
+const MergeWritingTask = ({ taskId, taskTitle }: MergeWritingTaskProps) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [pasteCount, setPasteCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
