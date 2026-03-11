@@ -372,7 +372,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
     <>
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground">שורשים שנגמרים באל"ף 🔤</h2>
-        <p className="text-muted-foreground text-base">בצורת בינוני סביל (פָּעוּל)</p>
+        <p className="text-muted-foreground text-base">בצורת הווה (בינוני) סביל – פָּעוּל</p>
       </div>
       <Card>
         <CardContent className="p-5 space-y-4">
