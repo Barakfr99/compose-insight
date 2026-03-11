@@ -4,10 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 import TaskPage from "./TaskPage";
 import DisciplineTask from "./DisciplineTask";
 import MergeWritingTask from "./MergeWritingTask";
+import GrammarRootsTask from "./GrammarRootsTask";
 
 const customRouteMap: Record<string, React.ComponentType<{ taskId: string }>> = {
   discipline: DisciplineTask,
   "merge-writing": MergeWritingTask,
+  "grammar-roots": GrammarRootsTask,
 };
 
 const TaskRouter = () => {
