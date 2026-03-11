@@ -102,7 +102,7 @@ interface GrammarRootsTaskProps {
   taskTitle: string;
 }
 
-const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
+const GrammarRootsTask = ({ taskId, taskTitle }: GrammarRootsTaskProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [pasteCount, setPasteCount] = useState(0);
