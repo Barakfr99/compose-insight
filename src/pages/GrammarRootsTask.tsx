@@ -521,7 +521,7 @@ const GrammarRootsTask = ({ taskId, taskTitle }: GrammarRootsTaskProps) => {
               <BookOpen size={16} />
               <span>תרגול דקדוק</span>
             </div>
-            <h1 className="text-3xl font-bold text-foreground">זיהוי שורשים ובניינים</h1>
+            <h1 className="text-3xl font-bold text-foreground">{taskTitle}</h1>
             <p className="text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed">
               במשימה זו תתרגלו זיהוי שורשים ובניינים במילים שנכתבות ונשמעות אותו הדבר אך יש להן משמעויות שונות. בנוסף, תתרגלו מציאת יוצא הדופן מבחינת הגזרה.
             </p>

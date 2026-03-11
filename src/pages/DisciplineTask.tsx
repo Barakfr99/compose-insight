@@ -15,7 +15,7 @@ interface DisciplineTaskProps {
   taskTitle: string;
 }
 
-const DisciplineTask = ({ taskId }: DisciplineTaskProps) => {
+const DisciplineTask = ({ taskId, taskTitle }: DisciplineTaskProps) => {
   const [answerText, setAnswerText] = useState("");
   const [pasteCount, setPasteCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);

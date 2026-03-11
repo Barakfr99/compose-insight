@@ -235,7 +235,7 @@ const MergeWritingTask = ({ taskId, taskTitle }: MergeWritingTaskProps) => {
             <BookOpen size={16} />
             <span>דף עבודה</span>
           </div>
-          <h1 className="text-3xl font-bold text-foreground">למידת כתיבה ממזגת</h1>
+          <h1 className="text-3xl font-bold text-foreground">{taskTitle}</h1>
           <p className="text-muted-foreground text-sm">מלאו את כל התרגילים ולחצו על &quot;הגשה&quot; בתחתית העמוד</p>
         </div>
 
