@@ -21,55 +21,91 @@ interface AnswerKey {
 
 const correctAnswers: AnswerKey = {
   // Part A - roots
-  'pair0_a_root': 'כפ"ה',
-  'pair0_b_root': 'כפ"ת',
-  'pair1_a_root': 'כר"ת',
-  'pair1_b_root': 'כר"ה',
-  'pair2_a_root': 'רש"מ',
-  'pair2_b_root': 'רש"ה',
-  'pair3_a_root': 'פנ"מ',
-  'pair3_b_root': 'פנ"ה',
-  'pair4_a_root': 'לא"מ',
-  'pair4_b_root': 'לא"ה',
-  'pair5_a_root': 'טע"ה',
-  'pair5_b_root': 'טע"מ',
-  'pair6_a_root': 'תר"מ',
-  'pair6_b_root': 'תר"ה',
-  'pair7_a_root': 'של"מ',
-  'pair7_b_root': 'של"ה',
-  'pair8_a_root': 'תפ"ר',
-  'pair8_b_root': 'פר"ה',
-  // Part A - binyanim
-  'pair0_a_binyan': 'פָּעַל (קל)',
-  'pair0_b_binyan': 'פָּעַל (קל)',
-  'pair1_a_binyan': 'פָּעַל (קל)',
-  'pair1_b_binyan': 'פָּעַל (קל)',
-  'pair2_a_binyan': 'הִפְעִיל',
-  'pair2_b_binyan': 'הִפְעִיל',
-  'pair3_a_binyan': 'הִפְעִיל',
-  'pair3_b_binyan': 'הִפְעִיל',
-  'pair4_a_binyan': 'הִפְעִיל',
-  'pair4_b_binyan': 'הִפְעִיל',
-  'pair5_a_binyan': 'הִפְעִיל',
-  'pair5_b_binyan': 'הִפְעִיל',
-  'pair6_a_binyan': 'הִפְעִיל',
-  'pair6_b_binyan': 'הִפְעִיל',
-  'pair7_a_binyan': 'הִפְעִיל',
-  'pair7_b_binyan': 'הִפְעִיל',
-  'pair8_a_binyan': 'פָּעַל (קל)',
-  'pair8_b_binyan': 'הִפְעִיל',
+  'pair0_a_root': 'כפה',
+  'pair0_b_root': 'כפת',
+  'pair1_a_root': 'כרת',
+  'pair1_b_root': 'כרה',
+  'pair2_a_root': 'רשמ',
+  'pair2_b_root': 'רשה',
+  'pair3_a_root': 'פנמ',
+  'pair3_b_root': 'פנה',
+  'pair4_a_root': 'לאמ',
+  'pair4_b_root': 'לאה',
+  'pair5_a_root': 'טעה',
+  'pair5_b_root': 'טעמ',
+  'pair6_a_root': 'תרמ',
+  'pair6_b_root': 'תרה',
+  'pair7_a_root': 'שלמ',
+  'pair7_b_root': 'שלה',
+  'pair8_a_root': 'תפר',
+  'pair8_b_root': 'פרה',
+  // Part A - binyanim (canonical keys)
+  'pair0_a_binyan': 'פעל',
+  'pair0_b_binyan': 'פעל',
+  'pair1_a_binyan': 'פעל',
+  'pair1_b_binyan': 'פעל',
+  'pair2_a_binyan': 'הפעיל',
+  'pair2_b_binyan': 'הפעיל',
+  'pair3_a_binyan': 'הפעיל',
+  'pair3_b_binyan': 'הפעיל',
+  'pair4_a_binyan': 'הפעיל',
+  'pair4_b_binyan': 'הפעיל',
+  'pair5_a_binyan': 'הפעיל',
+  'pair5_b_binyan': 'הפעיל',
+  'pair6_a_binyan': 'הפעיל',
+  'pair6_b_binyan': 'הפעיל',
+  'pair7_a_binyan': 'הפעיל',
+  'pair7_b_binyan': 'הפעיל',
+  'pair8_a_binyan': 'פעל',
+  'pair8_b_binyan': 'הפעיל',
   // Part B - Exercise 1
-  'ex1_q0': 'נָטוּי',
-  'ex1_q1': 'קָפוּא',
-  'ex1_q2': 'כְּלוּאָה',
-  'ex1_q3': 'שָׁגוּי',
-  'ex1_q4': 'מְצוּיִים',
+  'ex1_q0': 'נטוי',
+  'ex1_q1': 'קפוא',
+  'ex1_q2': 'כלואה',
+  'ex1_q3': 'שגוי',
+  'ex1_q4': 'מצויימ',
   // Part B - Exercise 2
-  'ex2_q0': 'הַמְצָאָה',
-  'ex2_q1': 'מִלּוּי',
-  'ex2_q2': 'שִׁנּוּי',
-  'ex2_q3': 'מְחָאָה',
-  'ex2_q4': 'מְלַאי',
+  'ex2_q0': 'המצאה',
+  'ex2_q1': 'מלוי',
+  'ex2_q2': 'שנוי',
+  'ex2_q3': 'מחאה',
+  'ex2_q4': 'מלאי',
+};
+
+// Display-friendly names for correct answers
+const displayAnswers: AnswerKey = {
+  'pair0_a_root': 'כפ"ה', 'pair0_b_root': 'כפ"ת',
+  'pair1_a_root': 'כר"ת', 'pair1_b_root': 'כר"ה',
+  'pair2_a_root': 'רש"מ', 'pair2_b_root': 'רש"ה',
+  'pair3_a_root': 'פנ"מ', 'pair3_b_root': 'פנ"ה',
+  'pair4_a_root': 'לא"מ', 'pair4_b_root': 'לא"ה',
+  'pair5_a_root': 'טע"ה', 'pair5_b_root': 'טע"מ',
+  'pair6_a_root': 'תר"מ', 'pair6_b_root': 'תר"ה',
+  'pair7_a_root': 'של"מ', 'pair7_b_root': 'של"ה',
+  'pair8_a_root': 'תפ"ר', 'pair8_b_root': 'פר"ה',
+  'pair0_a_binyan': 'פעל (קל)', 'pair0_b_binyan': 'פעל (קל)',
+  'pair1_a_binyan': 'פעל (קל)', 'pair1_b_binyan': 'פעל (קל)',
+  'pair2_a_binyan': 'הפעיל', 'pair2_b_binyan': 'הפעיל',
+  'pair3_a_binyan': 'הפעיל', 'pair3_b_binyan': 'הפעיל',
+  'pair4_a_binyan': 'הפעיל', 'pair4_b_binyan': 'הפעיל',
+  'pair5_a_binyan': 'הפעיל', 'pair5_b_binyan': 'הפעיל',
+  'pair6_a_binyan': 'הפעיל', 'pair6_b_binyan': 'הפעיל',
+  'pair7_a_binyan': 'הפעיל', 'pair7_b_binyan': 'הפעיל',
+  'pair8_a_binyan': 'פעל (קל)', 'pair8_b_binyan': 'הפעיל',
+  'ex1_q0': 'נָטוּי', 'ex1_q1': 'קָפוּא', 'ex1_q2': 'כְּלוּאָה',
+  'ex1_q3': 'שָׁגוּי', 'ex1_q4': 'מְצוּיִים',
+  'ex2_q0': 'הַמְצָאָה', 'ex2_q1': 'מִלּוּי', 'ex2_q2': 'שִׁנּוּי',
+  'ex2_q3': 'מְחָאָה', 'ex2_q4': 'מְלַאי',
+};
+
+const BINYAN_VARIANTS: Record<string, string[]> = {
+  'פעל': ['פעל', 'קל', 'פעלקל', 'קלפעל'],
+  'נפעל': ['נפעל', 'ניפעל'],
+  'פיעל': ['פיעל'],
+  'פועל': ['פועל'],
+  'הפעיל': ['הפעיל', 'היפעיל'],
+  'הופעל': ['הופעל'],
+  'התפעל': ['התפעל', 'היתפעל'],
 };
 
 const pairWords = ["כָּפְתָה", "כָּרְתָה", "מַרְשִׁים", "מַפְנִים", "מַלְאִים", "מַטְעִים", "מַתְרִים", "מַשְׁלִים", "תָּפְרוּ / תַּפְרוּ"];
@@ -92,8 +128,17 @@ interface GrammarRootsDashboardProps {
   taskTitle: string;
 }
 
-function normalizeRoot(val: string): string {
-  return val.replace(/["\s.]/g, "").replace(/״/g, "").replace(/׳/g, "");
+function normalizeHebrew(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/[\u0591-\u05C7]/g, '')   // ניקוד
+    .replace(/[.\-\s"'״׳()]/g, '')     // סימנים (כולל סוגריים)
+    .replace(/ך/g, 'כ')
+    .replace(/ם/g, 'מ')
+    .replace(/ן/g, 'נ')
+    .replace(/ף/g, 'פ')
+    .replace(/ץ/g, 'צ')
+    .trim();
 }
 
 function checkAnswer(key: string, studentVal: string): "correct" | "incorrect" | "empty" {
@@ -101,16 +146,19 @@ function checkAnswer(key: string, studentVal: string): "correct" | "incorrect" |
   const correct = correctAnswers[key];
   if (!correct) return "empty";
 
-  // For binyan answers, exact match
+  const normalizedInput = normalizeHebrew(studentVal);
+
+  // For binyan answers, check against variants
   if (key.includes("binyan")) {
-    return studentVal === correct ? "correct" : "incorrect";
+    const variants = BINYAN_VARIANTS[correct] || [correct];
+    return variants.some(v => normalizeHebrew(v) === normalizedInput) ? "correct" : "incorrect";
   }
-  // For exercise answers, exact match
+  // For exercise answers, normalize and compare
   if (key.startsWith("ex")) {
-    return studentVal === correct ? "correct" : "incorrect";
+    return normalizeHebrew(studentVal) === normalizeHebrew(correct) ? "correct" : "incorrect";
   }
   // For roots, normalize and compare
-  return normalizeRoot(studentVal) === normalizeRoot(correct) ? "correct" : "incorrect";
+  return normalizedInput === normalizeHebrew(correct) ? "correct" : "incorrect";
 }
 
 function computeScore(answers: Record<string, string>): { correct: number; total: number } {
@@ -216,7 +264,7 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                               {answers[rootKey] || "—"}
                             </span>
                             {rootStatus === "incorrect" && (
-                              <span className="text-xs text-muted-foreground">(נכון: {correctAnswers[rootKey]})</span>
+                              <span className="text-xs text-muted-foreground">(נכון: {displayAnswers[rootKey]})</span>
                             )}
                           </div>
                           <div className="flex items-center gap-2">
@@ -226,7 +274,7 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                               {answers[binyanKey] || "—"}
                             </span>
                             {binyanStatus === "incorrect" && (
-                              <span className="text-xs text-muted-foreground">(נכון: {correctAnswers[binyanKey]})</span>
+                              <span className="text-xs text-muted-foreground">(נכון: {displayAnswers[binyanKey]})</span>
                             )}
                           </div>
                         </div>
@@ -262,7 +310,7 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                             {answers[key] || "—"}
                           </span>
                           {status === "incorrect" && (
-                            <span className="text-xs text-muted-foreground">(נכון: {correctAnswers[key]})</span>
+                            <span className="text-xs text-muted-foreground">(נכון: {displayAnswers[key]})</span>
                           )}
                         </div>
                       );
