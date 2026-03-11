@@ -310,7 +310,7 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                             {answers[key] || "—"}
                           </span>
                           {status === "incorrect" && (
-                            <span className="text-xs text-muted-foreground">(נכון: {correctAnswers[key]})</span>
+                            <span className="text-xs text-muted-foreground">(נכון: {displayAnswers[key]})</span>
                           )}
                         </div>
                       );
