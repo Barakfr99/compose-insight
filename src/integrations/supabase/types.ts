@@ -81,18 +81,24 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          route: string | null
+          task_page_type: string
           title: string
         }
         Insert: {
           content?: string
           created_at?: string
           id?: string
+          route?: string | null
+          task_page_type?: string
           title: string
         }
         Update: {
           content?: string
           created_at?: string
           id?: string
+          route?: string | null
+          task_page_type?: string
           title?: string
         }
         Relationships: []
