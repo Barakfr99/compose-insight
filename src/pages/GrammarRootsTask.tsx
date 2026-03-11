@@ -191,8 +191,8 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
         {sentence.slice(0, idx)}
         <Popover>
           <PopoverTrigger asChild>
-            <button className="font-bold text-primary underline decoration-dotted underline-offset-4 cursor-pointer hover:text-primary/80 transition-colors text-[22px]" style={{ minHeight: 44, minWidth: 44 }}>
-              {word}
+             <button className="font-bold text-primary cursor-pointer hover:text-primary/80 transition-colors text-[22px]" style={{ minHeight: 44, minWidth: 44 }}>
+               {word}
             </button>
           </PopoverTrigger>
           <PopoverContent side="top" className="text-center text-base font-medium" dir="rtl">
