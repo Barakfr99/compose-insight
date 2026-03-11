@@ -379,7 +379,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
           <p className="text-lg leading-relaxed">
             יש שורשים שהאות האחרונה שלהם היא א', אבל בהרבה צורות האל"ף "נעלמת" ואנחנו לא שומעים אותה.
           </p>
-          <p className="text-lg font-semibold">דוגמה בבינוני סביל (פָּעוּל):</p>
+          <p className="text-lg font-semibold">דוגמה בהווה (בינוני) סביל – פָּעוּל:</p>
           <div className="overflow-x-auto">
             <table className="w-full text-lg border-collapse">
               <thead>
