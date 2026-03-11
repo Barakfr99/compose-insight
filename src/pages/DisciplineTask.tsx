@@ -12,6 +12,7 @@ const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).le
 
 interface DisciplineTaskProps {
   taskId: string;
+  taskTitle: string;
 }
 
 const DisciplineTask = ({ taskId }: DisciplineTaskProps) => {

@@ -142,6 +142,7 @@ const speakerColors = [
 
 interface MergeWritingTaskProps {
   taskId: string;
+  taskTitle: string;
 }
 
 const MergeWritingTask = ({ taskId }: MergeWritingTaskProps) => {

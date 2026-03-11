@@ -99,6 +99,7 @@ const allSteps = buildSteps();
 
 interface GrammarRootsTaskProps {
   taskId: string;
+  taskTitle: string;
 }
 
 const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
