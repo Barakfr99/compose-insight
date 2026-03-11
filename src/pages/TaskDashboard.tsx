@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import MergeWritingDashboard from "./MergeWritingDashboard";
+import GrammarRootsDashboard from "./GrammarRootsDashboard";
 import GenericTaskDashboard from "@/components/GenericTaskDashboard";
 
 const TaskDashboard = () => {
@@ -33,12 +34,14 @@ const TaskDashboard = () => {
     );
   }
 
-  // Route to specialized dashboard for merge-writing
   if ((task as any).route === "merge-writing") {
     return <MergeWritingDashboard taskId={taskId!} taskTitle={task.title} />;
   }
 
-  // Generic dashboard for all other tasks
+  if ((task as any).route === "grammar-roots") {
+    return <GrammarRootsDashboard taskId={taskId!} taskTitle={task.title} />;
+  }
+
   return <GenericTaskDashboard taskId={taskId!} taskTitle={task.title} />;
 };
 
