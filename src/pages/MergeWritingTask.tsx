@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { useMergeSettings } from "@/hooks/use-merge-settings";
 import { Search, PenLine, Quote, Lightbulb, BookOpen } from "lucide-react";
 
 const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
@@ -73,7 +72,7 @@ const exercises: Exercise[] = [
     ],
     partA: [
       { label: "שאלות:", fields: [
-        { id: "3_shared_a", label: "איזה מידע משותף לשניהם? א." },
+        { id: "3_shared_a", label: "איזה מידע משותף לשניהם? (לפחות 2 מתוך 3) א." },
         { id: "3_shared_b", label: "ב." },
         { id: "3_unique_omer", label: "מה ייחודי לעומר?" },
         { id: "3_unique_rachel", label: "מה ייחודי לרחל?" },
@@ -141,7 +140,11 @@ const speakerColors = [
   "bg-emerald-50 border-emerald-200",
 ];
 
-const MergeWritingTask = () => {
+interface MergeWritingTaskProps {
+  taskId: string;
+}
+
+const MergeWritingTask = ({ taskId }: MergeWritingTaskProps) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [pasteCount, setPasteCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -149,8 +152,6 @@ const MergeWritingTask = () => {
   const [studentName, setStudentName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const startTimeRef = useRef(Date.now());
-  const { data: mergeSettings } = useMergeSettings();
-  const mergeTitle = mergeSettings?.title || "למידת כתיבה ממזגת";
 
   const updateAnswer = (key: string, value: string) => {
     setAnswers(prev => ({ ...prev, [key]: value }));
@@ -175,7 +176,6 @@ const MergeWritingTask = () => {
 
   const hasContent = Object.values(answers).some(v => v.trim().length > 0);
 
-  // Calculate progress
   const progress = useMemo(() => {
     let filled = 0;
     let total = 0;
@@ -186,7 +186,7 @@ const MergeWritingTask = () => {
           if (answers[field.id]?.trim()) filled++;
         });
       });
-      total++; // writing part
+      total++;
       if (answers[`writing_${ex.id}`]?.trim()) filled++;
     });
     return total > 0 ? Math.round((filled / total) * 100) : 0;
@@ -197,14 +197,13 @@ const MergeWritingTask = () => {
     setIsSubmitting(true);
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
 
-    const { error } = await (supabase.from("submissions") as any).insert({
+    const { error } = await supabase.from("submissions").insert({
       student_name: studentName.trim(),
       answer_text: JSON.stringify(answers),
-      task_type: "merge_writing",
       word_count: totalWordCount,
       time_spent_seconds: timeSpent,
       paste_count: pasteCount,
-      task_id: null,
+      task_id: taskId,
     });
 
     setIsSubmitting(false);
@@ -235,7 +234,7 @@ const MergeWritingTask = () => {
             <BookOpen size={16} />
             <span>דף עבודה</span>
           </div>
-          <h1 className="text-3xl font-bold text-foreground">{mergeTitle}</h1>
+          <h1 className="text-3xl font-bold text-foreground">למידת כתיבה ממזגת</h1>
           <p className="text-muted-foreground text-sm">מלאו את כל התרגילים ולחצו על &quot;הגשה&quot; בתחתית העמוד</p>
         </div>
 
@@ -251,7 +250,6 @@ const MergeWritingTask = () => {
         {/* Exercises */}
         {exercises.map((ex) => (
           <Card key={ex.id} className="overflow-hidden shadow-sm">
-            {/* Exercise header */}
             <div className="bg-primary px-5 py-3 flex items-center gap-3">
               <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary-foreground text-primary font-bold text-sm shrink-0">
                 {ex.id}
@@ -260,13 +258,11 @@ const MergeWritingTask = () => {
             </div>
 
             <CardContent className="p-5 space-y-6">
-              {/* Instruction */}
               <div className="flex gap-3 items-start bg-amber-50 border border-amber-200 p-4 rounded-lg">
                 <Lightbulb size={20} className="text-amber-500 shrink-0 mt-0.5" />
                 <p className="text-sm text-foreground leading-relaxed">{ex.instruction}</p>
               </div>
 
-              {/* Texts */}
               <div className="space-y-3">
                 {ex.texts.map((t, i) => (
                   <div key={i} className={`p-4 rounded-lg border ${speakerColors[i % 2]}`}>
@@ -281,11 +277,11 @@ const MergeWritingTask = () => {
 
               <Separator />
 
-              {/* Part A - Identification */}
+              {/* Part A */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Search size={18} className="text-primary" />
-                  <h3 className="font-bold text-foreground">חלק א&apos;: זיהוי</h3>
+                  <h3 className="font-bold text-foreground">חלק א': זיהוי</h3>
                 </div>
                 {ex.partA.map((section, si) => (
                   <div key={si} className="space-y-3">
@@ -311,14 +307,13 @@ const MergeWritingTask = () => {
 
               <Separator />
 
-              {/* Part B - Writing */}
+              {/* Part B */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <PenLine size={18} className="text-primary" />
-                  <h3 className="font-bold text-foreground">חלק ב&apos;: כתיבה</h3>
+                  <h3 className="font-bold text-foreground">חלק ב': כתיבה</h3>
                 </div>
 
-                {/* Template tip box */}
                 <div className="border-r-4 border-primary bg-primary/5 p-4 rounded-lg rounded-r-none">
                   <div className="flex items-center gap-2 mb-2">
                     <Lightbulb size={16} className="text-primary" />

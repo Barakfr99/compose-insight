@@ -1,22 +1,14 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useMergeSettings } from "@/hooks/use-merge-settings";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { ChevronDown, ChevronUp, ArrowRight, Trash2 } from "lucide-react";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useNavigate } from "react-router-dom";
 
@@ -52,21 +44,24 @@ const fieldLabels: Record<string, string> = {
   "5_unique_cohen": "ייחודי לכהן",
 };
 
-const MergeWritingDashboard = () => {
+interface MergeWritingDashboardProps {
+  taskId: string;
+  taskTitle: string;
+}
+
+const MergeWritingDashboard = ({ taskId, taskTitle }: MergeWritingDashboardProps) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [grades, setGrades] = useState<Record<string, string>>({});
-  const { data: mergeSettings } = useMergeSettings();
-  const mergeTitle = mergeSettings?.title || "כתיבה ממזגת";
 
   const { data: submissions = [], isLoading } = useQuery({
-    queryKey: ["merge-writing-submissions"],
+    queryKey: ["submissions", taskId],
     queryFn: async () => {
-      const { data, error } = await (supabase
+      const { data, error } = await supabase
         .from("submissions")
-        .select("*") as any)
-        .eq("task_type", "merge_writing")
+        .select("*")
+        .eq("task_id", taskId)
         .order("submitted_at", { ascending: false });
       if (error) throw error;
       return data;
@@ -83,7 +78,7 @@ const MergeWritingDashboard = () => {
     if (error) {
       toast({ title: "שגיאה בשמירת ציון", variant: "destructive" });
     } else {
-      queryClient.invalidateQueries({ queryKey: ["merge-writing-submissions"] });
+      queryClient.invalidateQueries({ queryKey: ["submissions", taskId] });
       toast({ title: "ציון נשמר" });
     }
   };
@@ -93,7 +88,7 @@ const MergeWritingDashboard = () => {
     if (error) {
       toast({ title: "שגיאה במחיקה", variant: "destructive" });
     } else {
-      queryClient.invalidateQueries({ queryKey: ["merge-writing-submissions"] });
+      queryClient.invalidateQueries({ queryKey: ["submissions", taskId] });
       toast({ title: "ההגשה נמחקה" });
     }
   };
@@ -126,8 +121,8 @@ const MergeWritingDashboard = () => {
   return (
     <div className="min-h-screen p-6 max-w-4xl mx-auto space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">דשבורד - {mergeTitle}</h1>
-        <Button variant="outline" onClick={() => navigate("/admin")} className="gap-2">
+        <h1 className="text-2xl font-bold text-foreground">דשבורד - {taskTitle}</h1>
+        <Button variant="outline" onClick={() => navigate("/")} className="gap-2">
           <ArrowRight className="h-4 w-4" />
           חזרה
         </Button>
@@ -148,7 +143,6 @@ const MergeWritingDashboard = () => {
             return (
               <Card key={sub.id}>
                 <CardContent className="p-4">
-                  {/* Header */}
                   <div
                     className="flex items-center justify-between cursor-pointer"
                     onClick={() => setExpandedId(isExpanded ? null : sub.id)}
@@ -167,7 +161,6 @@ const MergeWritingDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Expanded content */}
                   {isExpanded && (
                     <div className="mt-4 space-y-5 border-t border-border pt-4">
                       {[1, 2, 3, 4, 5].map((exNum) => {
@@ -180,7 +173,6 @@ const MergeWritingDashboard = () => {
                               {exerciseLabels[exNum]}
                             </h4>
 
-                            {/* Part A answers */}
                             {partA.length > 0 && (
                               <div className="space-y-1">
                                 <p className="text-xs font-semibold text-muted-foreground">חלק א' - זיהוי:</p>
@@ -195,7 +187,6 @@ const MergeWritingDashboard = () => {
                               </div>
                             )}
 
-                            {/* Part B writing */}
                             {writing && (
                               <div className="space-y-1">
                                 <p className="text-xs font-semibold text-muted-foreground">חלק ב' - כתיבה:</p>
@@ -208,7 +199,6 @@ const MergeWritingDashboard = () => {
                         );
                       })}
 
-                      {/* Grade */}
                       <div className="flex items-center gap-3 pt-2 border-t border-border">
                         <Input
                           type="number"
