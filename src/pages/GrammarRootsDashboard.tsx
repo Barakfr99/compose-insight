@@ -436,9 +436,9 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                     <span className={`font-semibold ${score.correct === score.total ? "text-green-600" : score.correct >= score.total * 0.7 ? "text-primary" : "text-orange-500"}`}>
                       {score.correct}/{score.total}
                     </span>
-                    {s.grade !== null && (
-                      <span className="text-primary font-semibold">ציון: {s.grade}</span>
-                    )}
+                    <span className="text-primary font-semibold">
+                      ציון: {s.grade ?? Math.round((score.correct / score.total) * 100)}
+                    </span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
