@@ -168,8 +168,8 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
               {sentence.slice(0, i)}
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="font-bold text-primary underline decoration-dotted underline-offset-4 cursor-pointer hover:text-primary/80 transition-colors text-[22px]" style={{ minHeight: 44, minWidth: 44 }}>
-                    {part}
+                   <button className="font-bold text-primary cursor-pointer hover:text-primary/80 transition-colors text-[22px]" style={{ minHeight: 44, minWidth: 44 }}>
+                     {part}
                   </button>
                 </PopoverTrigger>
                 <PopoverContent side="top" className="text-center text-base font-medium" dir="rtl">
@@ -191,8 +191,8 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
         {sentence.slice(0, idx)}
         <Popover>
           <PopoverTrigger asChild>
-            <button className="font-bold text-primary underline decoration-dotted underline-offset-4 cursor-pointer hover:text-primary/80 transition-colors text-[22px]" style={{ minHeight: 44, minWidth: 44 }}>
-              {word}
+             <button className="font-bold text-primary cursor-pointer hover:text-primary/80 transition-colors text-[22px]" style={{ minHeight: 44, minWidth: 44 }}>
+               {word}
             </button>
           </PopoverTrigger>
           <PopoverContent side="top" className="text-center text-base font-medium" dir="rtl">
@@ -217,9 +217,10 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
           </span>
         </div>
 
-        <h2 className="text-2xl font-bold text-center text-foreground">המילה: <span className="text-primary text-[26px]">{pair.word}</span></h2>
+         <h2 className="text-2xl font-bold text-center text-foreground">המילה: <span className="text-primary text-[26px]">{pair.word}</span></h2>
+        <p className="text-sm text-muted-foreground text-center">💡 ניתן ללחוץ על המילה המודגשת כדי לראות את צורת ה"הוא אתמול" — אך עדיף לנסות קודם לבד!</p>
 
-        {/* Sentence A */}
+         {/* Sentence A */}
         <Card className="border-2 border-blue-200 bg-blue-50/50">
           <CardContent className="p-5 space-y-4">
             <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-1">
@@ -232,7 +233,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
                 <label className="text-sm font-medium text-foreground mb-1 block">שורש</label>
                 <Input
                   dir="rtl"
-                  placeholder='כתבו את השורש, למשל: כפ"ה'
+                  placeholder=""
                   value={answers[`pair${pairIndex}_a_root`] || ""}
                   onChange={(e) => updateAnswer(`pair${pairIndex}_a_root`, e.target.value)}
                   onPaste={handlePaste}
@@ -275,7 +276,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
                 <label className="text-sm font-medium text-foreground mb-1 block">שורש</label>
                 <Input
                   dir="rtl"
-                  placeholder='כתבו את השורש, למשל: כפ"ת'
+                  placeholder=""
                   value={answers[`pair${pairIndex}_b_root`] || ""}
                   onChange={(e) => updateAnswer(`pair${pairIndex}_b_root`, e.target.value)}
                   onPaste={handlePaste}
@@ -371,14 +372,14 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
     <>
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground">שורשים שנגמרים באל"ף 🔤</h2>
-        <p className="text-muted-foreground text-base">בצורת בינוני סביל (פָּעוּל)</p>
+        <p className="text-muted-foreground text-base">בצורת הווה (בינוני) סביל – פָּעוּל</p>
       </div>
       <Card>
         <CardContent className="p-5 space-y-4">
           <p className="text-lg leading-relaxed">
             יש שורשים שהאות האחרונה שלהם היא א', אבל בהרבה צורות האל"ף "נעלמת" ואנחנו לא שומעים אותה.
           </p>
-          <p className="text-lg font-semibold">דוגמה בבינוני סביל (פָּעוּל):</p>
+          <p className="text-lg font-semibold">דוגמה בהווה (בינוני) סביל – פָּעוּל:</p>
           <div className="overflow-x-auto">
             <table className="w-full text-lg border-collapse">
               <thead>
@@ -413,7 +414,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
             <p className="font-bold mb-2">⚠️ שימו לב לניקוד!</p>
             <p>יש הבדל גדול בין:</p>
             <ul className="mt-2 space-y-1 text-lg">
-              <li><strong>מִצוּי</strong> (חיריק – בניין פִּעֵל, שורש: מצ"י) = שכיח, נפוץ</li>
+              <li><strong>מִצוּי</strong> (חיריק – בניין פִּעֵל, שורש: מצ"י/ה) = שכיח, נפוץ</li>
               <li><strong>מָצוּי</strong> (קמץ – בניין קל, שורש: מצ"א) = נמצא</li>
             </ul>
             <p className="mt-2 font-semibold">הניקוד משנה הכול!</p>
@@ -500,7 +501,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
             </table>
           </div>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-base">
-            <p>זה יכול לבלבל! המילה "הַלְוָאָה" נגמרת ב-א', אבל השורש הוא ל.ו.ה (הוא אתמול – הִלְוָה).</p>
+            <p>זה יכול לבלבל! המילה "הַלְוָאָה" מכילה א', אבל השורש הוא ל.ו.ה (הוא אתמול – הִלְוָה).</p>
             <p className="mt-2 font-semibold">הכלל תמיד אותו כלל: כשאתם לא בטוחים – הטו לעבר נסתר (הוא אתמול). זו הדרך הבטוחה ביותר למצוא את השורש!</p>
           </div>
         </CardContent>
