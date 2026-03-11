@@ -217,9 +217,10 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
           </span>
         </div>
 
-        <h2 className="text-2xl font-bold text-center text-foreground">המילה: <span className="text-primary text-[26px]">{pair.word}</span></h2>
+         <h2 className="text-2xl font-bold text-center text-foreground">המילה: <span className="text-primary text-[26px]">{pair.word}</span></h2>
+        <p className="text-sm text-muted-foreground text-center">💡 ניתן ללחוץ על המילה המודגשת כדי לראות את צורת ה"הוא אתמול" — אך עדיף לנסות קודם לבד!</p>
 
-        {/* Sentence A */}
+         {/* Sentence A */}
         <Card className="border-2 border-blue-200 bg-blue-50/50">
           <CardContent className="p-5 space-y-4">
             <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-1">
