@@ -328,17 +328,29 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
             <span className="text-sm text-muted-foreground">תשובות נכונות: </span>
             <span className="font-bold text-primary text-lg">{score.correct}/{score.total}</span>
           </div>
+          <div className="bg-muted/50 rounded-lg px-4 py-2">
+            <span className="text-sm text-muted-foreground">ציון מחושב: </span>
+            <span className="font-bold text-foreground text-lg">{Math.round((score.correct / score.total) * 100)}</span>
+          </div>
           <div className="flex items-center gap-2">
-            <label className="text-sm text-muted-foreground whitespace-nowrap">ציון:</label>
+            <label className="text-sm text-muted-foreground whitespace-nowrap">ציון סופי:</label>
             <Input
               dir="ltr"
               type="number"
               min={0}
               max={100}
-              placeholder="0-100"
+              placeholder={String(Math.round((score.correct / score.total) * 100))}
               defaultValue={s.grade ?? ""}
               className="w-20 h-8 text-center text-sm"
-              onBlur={(e) => handleGradeChange(s.id, e.target.value)}
+              onBlur={(e) => {
+                const val = e.target.value;
+                if (val === "") {
+                  // If cleared, save auto-calculated grade
+                  handleGradeChange(s.id, String(Math.round((score.correct / score.total) * 100)));
+                } else {
+                  handleGradeChange(s.id, val);
+                }
+              }}
               onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
             />
           </div>
@@ -424,9 +436,9 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                     <span className={`font-semibold ${score.correct === score.total ? "text-green-600" : score.correct >= score.total * 0.7 ? "text-primary" : "text-orange-500"}`}>
                       {score.correct}/{score.total}
                     </span>
-                    {s.grade !== null && (
-                      <span className="text-primary font-semibold">ציון: {s.grade}</span>
-                    )}
+                    <span className="text-primary font-semibold">
+                      ציון: {s.grade ?? Math.round((score.correct / score.total) * 100)}
+                    </span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
