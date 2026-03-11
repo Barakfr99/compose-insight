@@ -48,7 +48,7 @@ const Admin = () => {
     },
   });
 
-  const PUBLISHED_ORIGIN = "https://pen-pal-portal.lovable.app";
+  const PUBLISHED_ORIGIN = "https://compose-insight.lovable.app";
 
   const handleShare = async (taskId: string) => {
     const url = `${PUBLISHED_ORIGIN}/task/${taskId}`;
