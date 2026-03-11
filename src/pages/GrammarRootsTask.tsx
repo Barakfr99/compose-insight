@@ -501,7 +501,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
             </table>
           </div>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-base">
-            <p>זה יכול לבלבל! המילה "הַלְוָאָה" נגמרת ב-א', אבל השורש הוא ל.ו.ה (הוא אתמול – הִלְוָה).</p>
+            <p>זה יכול לבלבל! המילה "הַלְוָאָה" מכילה א', אבל השורש הוא ל.ו.ה (הוא אתמול – הִלְוָה).</p>
             <p className="mt-2 font-semibold">הכלל תמיד אותו כלל: כשאתם לא בטוחים – הטו לעבר נסתר (הוא אתמול). זו הדרך הבטוחה ביותר למצוא את השורש!</p>
           </div>
         </CardContent>
