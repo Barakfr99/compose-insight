@@ -233,7 +233,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
                 <label className="text-sm font-medium text-foreground mb-1 block">שורש</label>
                 <Input
                   dir="rtl"
-                  placeholder='כתבו את השורש, למשל: כפ"ה'
+                  placeholder=""
                   value={answers[`pair${pairIndex}_a_root`] || ""}
                   onChange={(e) => updateAnswer(`pair${pairIndex}_a_root`, e.target.value)}
                   onPaste={handlePaste}
