@@ -264,7 +264,7 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                               {answers[rootKey] || "—"}
                             </span>
                             {rootStatus === "incorrect" && (
-                              <span className="text-xs text-muted-foreground">(נכון: {correctAnswers[rootKey]})</span>
+                              <span className="text-xs text-muted-foreground">(נכון: {displayAnswers[rootKey]})</span>
                             )}
                           </div>
                           <div className="flex items-center gap-2">
