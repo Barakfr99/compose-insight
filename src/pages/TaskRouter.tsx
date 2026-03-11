@@ -6,7 +6,7 @@ import DisciplineTask from "./DisciplineTask";
 import MergeWritingTask from "./MergeWritingTask";
 import GrammarRootsTask from "./GrammarRootsTask";
 
-const customRouteMap: Record<string, React.ComponentType<{ taskId: string }>> = {
+const customRouteMap: Record<string, React.ComponentType<{ taskId: string; taskTitle: string }>> = {
   discipline: DisciplineTask,
   "merge-writing": MergeWritingTask,
   "grammar-roots": GrammarRootsTask,
@@ -20,7 +20,7 @@ const TaskRouter = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("tasks")
-        .select("id, task_page_type, route")
+        .select("id, title, task_page_type, route")
         .eq("id", taskId!)
         .single();
       if (error) throw error;
@@ -47,7 +47,7 @@ const TaskRouter = () => {
 
   if (task.task_page_type === "custom" && task.route && customRouteMap[task.route]) {
     const CustomComponent = customRouteMap[task.route];
-    return <CustomComponent taskId={task.id} />;
+    return <CustomComponent taskId={task.id} taskTitle={task.title} />;
   }
 
   return <TaskPage />;
