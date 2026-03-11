@@ -274,7 +274,7 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
                               {answers[binyanKey] || "—"}
                             </span>
                             {binyanStatus === "incorrect" && (
-                              <span className="text-xs text-muted-foreground">(נכון: {correctAnswers[binyanKey]})</span>
+                              <span className="text-xs text-muted-foreground">(נכון: {displayAnswers[binyanKey]})</span>
                             )}
                           </div>
                         </div>
