@@ -414,7 +414,7 @@ const GrammarRootsTask = ({ taskId }: GrammarRootsTaskProps) => {
             <p className="font-bold mb-2">⚠️ שימו לב לניקוד!</p>
             <p>יש הבדל גדול בין:</p>
             <ul className="mt-2 space-y-1 text-lg">
-              <li><strong>מִצוּי</strong> (חיריק – בניין פִּעֵל, שורש: מצ"י) = שכיח, נפוץ</li>
+              <li><strong>מִצוּי</strong> (חיריק – בניין פִּעֵל, שורש: מצ"י/ה) = שכיח, נפוץ</li>
               <li><strong>מָצוּי</strong> (קמץ – בניין קל, שורש: מצ"א) = נמצא</li>
             </ul>
             <p className="mt-2 font-semibold">הניקוד משנה הכול!</p>
