@@ -180,7 +180,16 @@ const StatusIcon = ({ status }: { status: "correct" | "incorrect" | "empty" }) =
 const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps) => {
   const navigate = useNavigate();
   const [sortMode, setSortMode] = useState<SortMode>("time");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const queryClient = useQueryClient();
+
+  const handleCopyLink = (submissionId: string) => {
+    const url = `${window.location.origin}/task/${taskId}/feedback/${submissionId}`;
+    navigator.clipboard.writeText(url);
+    setCopiedId(submissionId);
+    setTimeout(() => setCopiedId(null), 2000);
+    toast({ title: "קישור הועתק ללוח" });
+  };
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["submissions", taskId],
