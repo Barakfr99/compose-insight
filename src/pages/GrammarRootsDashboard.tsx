@@ -6,8 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, ClipboardPaste, Trash2, ArrowRight, Check, X, Minus, FileText } from "lucide-react";
-import { generateGrammarPDF } from "@/lib/generate-grammar-pdf";
+import { Clock, ClipboardPaste, Trash2, ArrowRight, Check, X, Minus, Link2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
