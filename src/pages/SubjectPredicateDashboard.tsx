@@ -206,8 +206,8 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
     toast({ title: "קישור הועתק ללוח" });
   };
 
-  const avgGrade = submissions.length > 0
-    ? Math.round(submissions.filter(s => s.grade !== null).reduce((sum, s) => sum + (s.grade ?? 0), 0) / Math.max(1, submissions.filter(s => s.grade !== null).length))
+  const avgGrade = submissionsWithGrade.length > 0
+    ? Math.round(submissionsWithGrade.reduce((sum, s) => sum + s.effectiveGrade, 0) / submissionsWithGrade.length)
     : null;
 
   return (
