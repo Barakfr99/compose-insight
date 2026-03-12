@@ -49,15 +49,15 @@ function getSentenceExplanation(
     const studentRole = student[Number(wi)];
     const word = words[Number(wi)];
     if (!studentRole) {
-      errors.push(`"${word}" → ${correctRole} (לא סומן)`);
+      errors.push(`"${word}" ← ${correctRole} (לא סומן)`);
     } else if (studentRole !== correctRole) {
-      errors.push(`"${word}" → ${correctRole} (סומן כ${studentRole})`);
+      errors.push(`"${word}" ← ${correctRole} (סומן כ${studentRole})`);
     }
   }
 
   for (const [wi, studentRole] of Object.entries(student)) {
     if (!(wi in correct)) {
-      errors.push(`"${words[Number(wi)]}" → מיותר (סומן כ${studentRole})`);
+      errors.push(`"${words[Number(wi)]}" ← מיותר (סומן כ${studentRole})`);
     }
   }
 

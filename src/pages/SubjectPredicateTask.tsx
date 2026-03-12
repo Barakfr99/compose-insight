@@ -119,11 +119,11 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
             <p className="text-sm font-semibold text-foreground mt-2">מתי נזהה נושא סתמי?</p>
             <p className="text-sm text-muted-foreground">
               <strong className="text-foreground">1.</strong> פועל ברבים ללא ציון עושה הפעולה —{" "}
-              <span className="text-xs">למשל: &quot;בישראל <b>נוהגים</b> בצד ימין&quot; — מי נוהגים? לא צוין → נושא סתמי</span>
+              <span className="text-xs">למשל: &quot;בישראל <b>נוהגים</b> בצד ימין&quot; — מי נוהגים? לא צוין ← נושא סתמי</span>
             </p>
             <p className="text-sm text-muted-foreground">
               <strong className="text-foreground">2.</strong> פועל סביל + מילת יחס —{" "}
-              <span className="text-xs">למשל: &quot;בישיבת המועצה <b>הוחלט</b> על סגירת הרחוב&quot; — מי החליט? לא צוין → נושא סתמי</span>
+              <span className="text-xs">למשל: &quot;בישיבת המועצה <b>הוחלט</b> על סגירת הרחוב&quot; — מי החליט? לא צוין ← נושא סתמי</span>
             </p>
           </CardContent>
         </Card>
