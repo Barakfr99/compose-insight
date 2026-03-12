@@ -175,12 +175,12 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
                           <PopoverTrigger asChild>
                             <button
                               disabled={isSubmitted}
-                              className="px-1 py-0.5 text-base text-foreground rounded hover:bg-accent transition-colors cursor-pointer"
+                              className="px-1.5 py-1.5 min-h-[44px] text-base text-foreground rounded hover:bg-accent active:bg-accent/80 transition-colors cursor-pointer"
                             >
                               {word}
                             </button>
                           </PopoverTrigger>
-                          <PopoverContent side="top" className="w-auto p-2 flex flex-col gap-1" dir="rtl">
+                          <PopoverContent side="bottom" align="center" className="w-auto p-2 flex flex-col gap-1" dir="rtl">
                             {roles.map((r) => (
                               <button
                                 key={r.label}
