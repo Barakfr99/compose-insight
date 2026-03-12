@@ -62,7 +62,8 @@
     font-family: 'Heebo', sans-serif;
     direction: rtl;
     -webkit-text-size-adjust: 100%;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
   }
 }
 
