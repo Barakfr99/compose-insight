@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import SubjectPredicateFeedback from "./SubjectPredicateFeedback";
-import GrammarRootsFeedback from "./GrammarRootsFeedback";
+import { lazy, Suspense } from "react";
+const SubjectPredicateFeedback = lazy(() => import("./SubjectPredicateFeedback"));
+const GrammarRootsFeedback = lazy(() => import("./GrammarRootsFeedback"));
 
 const FeedbackRouter = () => {
   const { taskId, submissionId } = useParams<{ taskId: string; submissionId: string }>();
@@ -17,15 +18,15 @@ const FeedbackRouter = () => {
     enabled: !!taskId,
   });
 
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">טוען...</p></div>;
-  }
+  const loading = <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">טוען...</p></div>;
 
-  if (task?.route === "grammar-roots") {
-    return <GrammarRootsFeedback />;
-  }
+  if (isLoading) return loading;
 
-  return <SubjectPredicateFeedback />;
+  return (
+    <Suspense fallback={loading}>
+      {task?.route === "grammar-roots" ? <GrammarRootsFeedback /> : <SubjectPredicateFeedback />}
+    </Suspense>
+  );
 };
 
 export default FeedbackRouter;
