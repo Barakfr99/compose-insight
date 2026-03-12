@@ -6,7 +6,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, ClipboardPaste, Trash2, ArrowRight, Check, X, Minus } from "lucide-react";
+import { Clock, ClipboardPaste, Trash2, ArrowRight, Check, X, Minus, FileText } from "lucide-react";
+import { generateGrammarPDF } from "@/lib/generate-grammar-pdf";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -354,6 +355,18 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
               onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
             />
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => {
+              const grade = s.grade ?? Math.round((score.correct / score.total) * 100);
+              generateGrammarPDF(s.student_name, taskTitle, answers, grade);
+            }}
+          >
+            <FileText className="h-3.5 w-3.5" />
+            ייצוא דף משוב
+          </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive">
