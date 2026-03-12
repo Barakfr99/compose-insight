@@ -43,6 +43,10 @@ const TaskDashboard = () => {
     return <GrammarRootsDashboard taskId={taskId!} taskTitle={task.title} />;
   }
 
+  if ((task as any).route === "subject-predicate") {
+    return <SubjectPredicateDashboard taskId={taskId!} taskTitle={task.title} />;
+  }
+
   return <GenericTaskDashboard taskId={taskId!} taskTitle={task.title} />;
 };
 
