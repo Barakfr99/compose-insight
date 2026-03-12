@@ -9,7 +9,7 @@ import CreateTask from "./pages/CreateTask";
 import TaskRouter from "./pages/TaskRouter";
 import TaskDashboard from "./pages/TaskDashboard";
 import TaskInstructions from "./pages/TaskInstructions";
-import SubjectPredicateFeedback from "./pages/SubjectPredicateFeedback";
+import FeedbackRouter from "./pages/FeedbackRouter";
 
 const queryClient = new QueryClient();
 
