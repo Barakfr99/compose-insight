@@ -129,7 +129,7 @@ function buildPartAErrors(answers: Record<string, string>): string {
           <p style="margin:4px 0;color:#6b7280;font-size:14px">📋 הטיות הפועל (הוא):</p>
           ${conjugationTableHTML(data, data.rootLetters, false, '')}
           <p style="margin:4px 0;color:#374151">
-            💡 האותיות <span style="color:#dc2626;font-weight:bold">${data.rootLetters.join(', ')}</span> חוזרות בכל ההטיות — הן השורש → ${data.root}
+            💡 האותיות <span style="color:#dc2626;font-weight:bold">${data.rootLetters.join(', ')}</span> חוזרות בכל ההטיות — הן השורש ← ${data.root}
           </p>
         `;
       }
