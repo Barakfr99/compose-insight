@@ -367,13 +367,10 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
             variant="outline"
             size="sm"
             className="gap-1.5"
-            onClick={() => {
-              const grade = s.grade ?? Math.round((score.correct / score.total) * 100);
-              generateGrammarPDF(s.student_name, taskTitle, answers, grade);
-            }}
+            onClick={() => handleCopyLink(s.id)}
           >
-            <FileText className="h-3.5 w-3.5" />
-            ייצוא דף משוב
+            {copiedId === s.id ? <Check className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
+            {copiedId === s.id ? "הועתק!" : "קישור למשוב"}
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
