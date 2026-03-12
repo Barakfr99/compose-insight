@@ -77,8 +77,8 @@ const SubjectPredicateFeedback = () => {
   const grade = submission.grade ?? calculateGrade(studentAnswers);
 
   return (
-    <div className="min-h-screen bg-background pb-safe">
-      <div className="sticky top-0 z-50 bg-primary shadow-md px-4 py-3 text-center">
+    <div className="min-h-screen min-h-[100dvh] bg-background pb-safe">
+      <div className="sticky top-0 z-50 bg-primary shadow-md px-4 py-3 text-center" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
         <h1 className="text-lg font-bold text-primary-foreground">משוב — תרגול נושא ונשוא</h1>
       </div>
 

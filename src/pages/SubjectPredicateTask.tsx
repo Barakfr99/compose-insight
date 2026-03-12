@@ -96,8 +96,8 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
   };
 
   return (
-    <div className="min-h-screen bg-background pb-safe">
-      <div className="sticky top-0 z-50 bg-primary shadow-md px-4 py-3 text-center">
+    <div className="min-h-screen min-h-[100dvh] bg-background pb-safe">
+      <div className="sticky top-0 z-50 bg-primary shadow-md px-4 py-3 text-center" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
         <h1 className="text-lg font-bold text-primary-foreground">{taskTitle}</h1>
       </div>
 
@@ -158,7 +158,7 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
                             key={wi}
                             onClick={() => !isSubmitted && clearWord(si, wi)}
                             disabled={isSubmitted}
-                            className={`px-2 py-0.5 rounded-md border text-base font-medium cursor-pointer transition-all hover:opacity-80 ${roleStyleMap[role]}`}
+                            className={`px-2 py-1.5 min-h-[44px] rounded-md border text-base font-medium cursor-pointer transition-all active:scale-95 ${roleStyleMap[role]}`}
                             title={`${role} — לחצו להסרה`}
                           >
                             {word}
@@ -175,17 +175,17 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
                           <PopoverTrigger asChild>
                             <button
                               disabled={isSubmitted}
-                              className="px-1 py-0.5 text-base text-foreground rounded hover:bg-accent transition-colors cursor-pointer"
+                              className="px-1.5 py-1.5 min-h-[44px] text-base text-foreground rounded hover:bg-accent active:bg-accent/80 transition-colors cursor-pointer"
                             >
                               {word}
                             </button>
                           </PopoverTrigger>
-                          <PopoverContent side="top" className="w-auto p-2 flex flex-col gap-1" dir="rtl">
+                          <PopoverContent side="bottom" align="center" className="w-auto p-2 flex flex-col gap-1" dir="rtl">
                             {roles.map((r) => (
                               <button
                                 key={r.label}
                                 onClick={() => selectRole(si, wi, r.label)}
-                                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:opacity-90 ${r.colorClass}`}
+                                className={`px-4 py-2.5 min-h-[44px] rounded-md text-sm font-medium transition-colors active:scale-95 ${r.colorClass}`}
                               >
                                 {r.label}
                               </button>
