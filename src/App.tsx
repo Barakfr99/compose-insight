@@ -9,6 +9,7 @@ import CreateTask from "./pages/CreateTask";
 import TaskRouter from "./pages/TaskRouter";
 import TaskDashboard from "./pages/TaskDashboard";
 import TaskInstructions from "./pages/TaskInstructions";
+import SubjectPredicateFeedback from "./pages/SubjectPredicateFeedback";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/admin/edit/:taskId" element={<CreateTask />} />
           <Route path="/task/:taskId" element={<TaskRouter />} />
           <Route path="/task/:taskId/dashboard" element={<TaskDashboard />} />
+          <Route path="/task/:taskId/feedback/:submissionId" element={<SubjectPredicateFeedback />} />
           <Route path="/task-instructions" element={<TaskInstructions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
