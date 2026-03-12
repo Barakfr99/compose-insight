@@ -18,15 +18,15 @@ const FeedbackRouter = () => {
     enabled: !!taskId,
   });
 
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">טוען...</p></div>;
-  }
+  const loading = <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">טוען...</p></div>;
 
-  if (task?.route === "grammar-roots") {
-    return <GrammarRootsFeedback />;
-  }
+  if (isLoading) return loading;
 
-  return <SubjectPredicateFeedback />;
+  return (
+    <Suspense fallback={loading}>
+      {task?.route === "grammar-roots" ? <GrammarRootsFeedback /> : <SubjectPredicateFeedback />}
+    </Suspense>
+  );
 };
 
 export default FeedbackRouter;
