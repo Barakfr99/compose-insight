@@ -158,7 +158,7 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
                             key={wi}
                             onClick={() => !isSubmitted && clearWord(si, wi)}
                             disabled={isSubmitted}
-                            className={`px-2 py-0.5 rounded-md border text-base font-medium cursor-pointer transition-all hover:opacity-80 ${roleStyleMap[role]}`}
+                            className={`px-2 py-1.5 min-h-[44px] rounded-md border text-base font-medium cursor-pointer transition-all active:scale-95 ${roleStyleMap[role]}`}
                             title={`${role} — לחצו להסרה`}
                           >
                             {word}
