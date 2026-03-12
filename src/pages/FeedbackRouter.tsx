@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import SubjectPredicateFeedback from "./SubjectPredicateFeedback";
-import GrammarRootsFeedback from "./GrammarRootsFeedback";
+import { lazy, Suspense } from "react";
+const SubjectPredicateFeedback = lazy(() => import("./SubjectPredicateFeedback"));
+const GrammarRootsFeedback = lazy(() => import("./GrammarRootsFeedback"));
 
 const FeedbackRouter = () => {
   const { taskId, submissionId } = useParams<{ taskId: string; submissionId: string }>();
