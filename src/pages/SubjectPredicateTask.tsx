@@ -185,7 +185,7 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
                               <button
                                 key={r.label}
                                 onClick={() => selectRole(si, wi, r.label)}
-                                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:opacity-90 ${r.colorClass}`}
+                                className={`px-4 py-2.5 min-h-[44px] rounded-md text-sm font-medium transition-colors active:scale-95 ${r.colorClass}`}
                               >
                                 {r.label}
                               </button>
