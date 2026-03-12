@@ -6,8 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, ClipboardPaste, Trash2, ArrowRight, Check, X, Minus, FileText } from "lucide-react";
-import { generateGrammarPDF } from "@/lib/generate-grammar-pdf";
+import { Clock, ClipboardPaste, Trash2, ArrowRight, Check, X, Minus, Link2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -181,7 +180,16 @@ const StatusIcon = ({ status }: { status: "correct" | "incorrect" | "empty" }) =
 const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps) => {
   const navigate = useNavigate();
   const [sortMode, setSortMode] = useState<SortMode>("time");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const queryClient = useQueryClient();
+
+  const handleCopyLink = (submissionId: string) => {
+    const url = `${window.location.origin}/task/${taskId}/feedback/${submissionId}`;
+    navigator.clipboard.writeText(url);
+    setCopiedId(submissionId);
+    setTimeout(() => setCopiedId(null), 2000);
+    toast({ title: "קישור הועתק ללוח" });
+  };
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["submissions", taskId],
@@ -359,13 +367,10 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
             variant="outline"
             size="sm"
             className="gap-1.5"
-            onClick={() => {
-              const grade = s.grade ?? Math.round((score.correct / score.total) * 100);
-              generateGrammarPDF(s.student_name, taskTitle, answers, grade);
-            }}
+            onClick={() => handleCopyLink(s.id)}
           >
-            <FileText className="h-3.5 w-3.5" />
-            ייצוא דף משוב
+            {copiedId === s.id ? <Check className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
+            {copiedId === s.id ? "הועתק!" : "קישור למשוב"}
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
