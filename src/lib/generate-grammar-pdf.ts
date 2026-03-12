@@ -88,7 +88,7 @@ function conjugationTableHTML(data: { past: string; present: string; future: str
       </tr>
     </table>
     <p style="margin:4px 0;color:#374151">
-      💡 האותיות <span style="color:#dc2626;font-weight:bold">${rootLetters.join(', ')}</span> חוזרות בכל ההטיות — הן השורש → ${conjugationData[Object.keys(conjugationData)[0]].a.root ? '' : ''}
+      💡 האותיות <span style="color:#dc2626;font-weight:bold">${rootLetters.join(', ')}</span> חוזרות בכל ההטיות — הן השורש ← ${conjugationData[Object.keys(conjugationData)[0]].a.root ? '' : ''}
     </p>
     ${showBinyanMarkers ? `<p style="margin:4px 0;color:#1d4ed8">🔹 ${binyanExplanation}</p>` : ''}
   `;
