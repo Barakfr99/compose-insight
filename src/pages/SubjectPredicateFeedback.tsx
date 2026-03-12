@@ -124,7 +124,7 @@ const SubjectPredicateFeedback = () => {
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold shrink-0 mt-0.5">
                       {si + 1}
                     </span>
-                    <div className="flex flex-wrap gap-1.5 leading-loose">
+                    <div className="flex flex-wrap items-center gap-1.5 leading-relaxed">
                       {words.map((word, wi) => {
                         const { feedback, studentRole, correctRole } = getWordFeedback(si, wi, studentAnswers);
                         const role = studentSel[wi];
@@ -134,30 +134,19 @@ const SubjectPredicateFeedback = () => {
                         }
 
                         return (
-                          <span key={wi} className="inline-flex flex-col items-center">
-                            {/* Icon above */}
-                            {feedback === "correct" && <Check className="h-3.5 w-3.5 text-success" />}
-                            {(feedback === "wrong-role" || feedback === "extra") && <X className="h-3.5 w-3.5 text-destructive" />}
-                            {feedback === "missing" && <Check className="h-3.5 w-3.5 text-success/50" />}
+                          <span key={wi} className="inline-flex items-center gap-0.5">
+                            {feedback === "correct" && <Check className="h-3.5 w-3.5 text-success shrink-0" />}
+                            {(feedback === "wrong-role" || feedback === "extra") && <X className="h-3.5 w-3.5 text-destructive shrink-0" />}
+                            {feedback === "missing" && <Check className="h-3.5 w-3.5 text-success/50 shrink-0" />}
 
-                            {/* Word with student's marking */}
                             <span className={`px-1.5 py-0.5 rounded border text-sm font-medium ${
                               feedback === "correct" ? roleStyleMap[role!] :
                               feedback === "wrong-role" ? "bg-destructive/10 text-destructive border-destructive/30" :
                               feedback === "extra" ? "bg-destructive/10 text-destructive border-destructive/30" :
-                              feedback === "missing" ? `border-dashed ${roleBadgeMap[correctRole!]} opacity-50` :
-                              ""
+                              feedback === "missing" ? `border-dashed ${roleBadgeMap[correctRole!]} opacity-50` : ""
                             }`}>
                               {word}
                             </span>
-
-                            {/* Correct role label for wrong/missing */}
-                            {feedback === "wrong-role" && (
-                              <span className="text-[10px] text-success font-medium mt-0.5">← {correctRole}</span>
-                            )}
-                            {feedback === "missing" && (
-                              <span className="text-[10px] text-muted-foreground mt-0.5">חסר</span>
-                            )}
                           </span>
                         );
                       })}
