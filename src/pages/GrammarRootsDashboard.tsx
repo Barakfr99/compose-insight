@@ -355,6 +355,18 @@ const GrammarRootsDashboard = ({ taskId, taskTitle }: GrammarRootsDashboardProps
               onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
             />
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => {
+              const grade = s.grade ?? Math.round((score.correct / score.total) * 100);
+              generateGrammarPDF(s.student_name, taskTitle, answers, grade);
+            }}
+          >
+            <FileText className="h-3.5 w-3.5" />
+            ייצוא דף משוב
+          </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive">
