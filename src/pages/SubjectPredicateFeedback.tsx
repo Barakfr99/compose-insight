@@ -124,21 +124,27 @@ const SubjectPredicateFeedback = () => {
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold shrink-0 mt-0.5">
                       {si + 1}
                     </span>
-                    <div className="flex flex-wrap items-center gap-1.5 leading-relaxed">
+                    <div className="flex flex-wrap items-end gap-1.5">
                       {words.map((word, wi) => {
                         const { feedback, studentRole, correctRole } = getWordFeedback(si, wi, studentAnswers);
                         const role = studentSel[wi];
 
                         if (feedback === "none") {
-                          return <span key={wi} className="text-sm text-foreground px-1 py-0.5">{word}</span>;
+                          return (
+                            <span key={wi} className="inline-flex flex-col items-center">
+                              <span className="h-4" />
+                              <span className="text-sm text-foreground px-1 py-0.5">{word}</span>
+                            </span>
+                          );
                         }
 
                         return (
-                          <span key={wi} className="inline-flex items-center gap-0.5">
-                            {feedback === "correct" && <Check className="h-3.5 w-3.5 text-success shrink-0" />}
-                            {(feedback === "wrong-role" || feedback === "extra") && <X className="h-3.5 w-3.5 text-destructive shrink-0" />}
-                            {feedback === "missing" && <Check className="h-3.5 w-3.5 text-success/50 shrink-0" />}
-
+                          <span key={wi} className="inline-flex flex-col items-center">
+                            <span className="h-4 flex items-center justify-center">
+                              {feedback === "correct" && <Check className="h-3.5 w-3.5 text-success" />}
+                              {(feedback === "wrong-role" || feedback === "extra") && <X className="h-3.5 w-3.5 text-destructive" />}
+                              {feedback === "missing" && <Check className="h-3.5 w-3.5 text-success/50" />}
+                            </span>
                             <span className={`px-1.5 py-0.5 rounded border text-sm font-medium ${
                               feedback === "correct" ? roleStyleMap[role!] :
                               feedback === "wrong-role" ? "bg-destructive/10 text-destructive border-destructive/30" :
