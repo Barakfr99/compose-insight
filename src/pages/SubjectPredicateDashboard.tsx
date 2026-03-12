@@ -162,6 +162,13 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
     return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
   });
 
+  const formatTime = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleString("he-IL", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" });
+  };
+
+  const formatMinutes = (seconds: number) => `${Math.round(seconds / 60)} דקות`;
+
   const handleDelete = async (id: string) => {
     const { error } = await supabase.from("submissions").delete().eq("id", id);
     if (error) {
