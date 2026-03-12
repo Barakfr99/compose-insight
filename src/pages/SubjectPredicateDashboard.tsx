@@ -147,9 +147,18 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
     refetchInterval: 5000,
   });
 
-  const sorted = [...submissions].sort((a, b) => {
+  const parseSelections = (text: string): Record<number, Record<number, Role>> => {
+    try { return JSON.parse(text); } catch { return {}; }
+  };
+
+  const submissionsWithGrade = submissions.map((s) => ({
+    ...s,
+    effectiveGrade: s.grade ?? calculateGrade(parseSelections(s.answer_text)),
+  }));
+
+  const sorted = [...submissionsWithGrade].sort((a, b) => {
     if (sortMode === "name") return a.student_name.localeCompare(b.student_name, "he");
-    if (sortMode === "grade") return (b.grade ?? -1) - (a.grade ?? -1);
+    if (sortMode === "grade") return b.effectiveGrade - a.effectiveGrade;
     return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
   });
 
@@ -159,10 +168,6 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
   };
 
   const formatMinutes = (seconds: number) => `${Math.round(seconds / 60)} דקות`;
-
-  const parseSelections = (text: string): Record<number, Record<number, Role>> => {
-    try { return JSON.parse(text); } catch { return {}; }
-  };
 
   const handleDelete = async (id: string) => {
     const { error } = await supabase.from("submissions").delete().eq("id", id);
@@ -208,8 +213,8 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
     toast({ title: "קישור הועתק ללוח" });
   };
 
-  const avgGrade = submissions.length > 0
-    ? Math.round(submissions.filter(s => s.grade !== null).reduce((sum, s) => sum + (s.grade ?? 0), 0) / Math.max(1, submissions.filter(s => s.grade !== null).length))
+  const avgGrade = submissionsWithGrade.length > 0
+    ? Math.round(submissionsWithGrade.reduce((sum, s) => sum + s.effectiveGrade, 0) / submissionsWithGrade.length)
     : null;
 
   return (
@@ -274,11 +279,9 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
                       <ClipboardPaste className="h-3.5 w-3.5" />
                       {s.paste_count}
                     </span>
-                    {s.grade !== null && (
-                      <span className={`font-semibold ${s.grade >= 80 ? "text-success" : s.grade >= 60 ? "text-warning" : "text-destructive"}`}>
-                        ציון: {s.grade}
-                      </span>
-                    )}
+                    <span className={`font-semibold ${s.effectiveGrade >= 80 ? "text-success" : s.effectiveGrade >= 60 ? "text-warning" : "text-destructive"}`}>
+                      ציון: {s.effectiveGrade}
+                    </span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -299,7 +302,7 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
                           min={0}
                           max={100}
                           placeholder="0-100"
-                          defaultValue={s.grade ?? ""}
+                          defaultValue={s.effectiveGrade}
                           className="w-20 h-8 text-center text-sm"
                           onBlur={(e) => handleGradeChange(s.id, e.target.value)}
                           onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
