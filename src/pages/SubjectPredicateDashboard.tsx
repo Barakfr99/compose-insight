@@ -272,11 +272,9 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
                       <ClipboardPaste className="h-3.5 w-3.5" />
                       {s.paste_count}
                     </span>
-                    {s.grade !== null && (
-                      <span className={`font-semibold ${s.grade >= 80 ? "text-success" : s.grade >= 60 ? "text-warning" : "text-destructive"}`}>
-                        ציון: {s.grade}
-                      </span>
-                    )}
+                    <span className={`font-semibold ${s.effectiveGrade >= 80 ? "text-success" : s.effectiveGrade >= 60 ? "text-warning" : "text-destructive"}`}>
+                      ציון: {s.effectiveGrade}
+                    </span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -297,7 +295,7 @@ const SubjectPredicateDashboard = ({ taskId, taskTitle }: Props) => {
                           min={0}
                           max={100}
                           placeholder="0-100"
-                          defaultValue={s.grade ?? ""}
+                          defaultValue={s.effectiveGrade}
                           className="w-20 h-8 text-center text-sm"
                           onBlur={(e) => handleGradeChange(s.id, e.target.value)}
                           onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
