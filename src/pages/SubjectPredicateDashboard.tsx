@@ -57,7 +57,7 @@ function getSentenceExplanation(
 
   for (const [wi, studentRole] of Object.entries(student)) {
     if (!(wi in correct)) {
-      errors.push(`"${words[Number(wi)]}" → מיותר (סומן כ${studentRole})`);
+      errors.push(`"${words[Number(wi)]}" ← מיותר (סומן כ${studentRole})`);
     }
   }
 
