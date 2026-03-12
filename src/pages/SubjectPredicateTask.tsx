@@ -7,41 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Send, Info } from "lucide-react";
-
-// ─── Data ───────────────────────────────────────────────────────────────────
-
-const sentences = [
-  "מחר נלמד את הנושא החדש.",
-  "סגרו את הדלת בצאתכם החוצה!",
-  "כתבו את המשפטים הבאים במחברת!",
-  "בפגישה דחופה בבית הנשיא סוכם על הקמת ממשלה חדשה.",
-  "במקרה של עומס תנועה אני אנסע בדרך אחרת.",
-  "הספר החדש של יהושע קנז יצא לאור.",
-  "הבחינה בלשון כבר כתובה.",
-  "הנזקים הבריאותיים של העישון מטרידים כמעט כל מעשן.",
-  "הבוקר דיווחו בהרחבה על ההצפות בצפון הארץ.",
-  "מצאתי את האפיקומן בליל הסדר.",
-  "ילדים אוהבים שוקולד.",
-  "עברית כותבים מימין לשמאל.",
-];
-
-type Role = "נשוא" | "נושא" | "נשוא+נושא" | "נשוא+נושא סתמי";
-
-const roles: { label: Role; colorClass: string }[] = [
-  { label: "נשוא", colorClass: "bg-destructive text-destructive-foreground" },
-  { label: "נושא", colorClass: "bg-primary text-primary-foreground" },
-  { label: "נשוא+נושא", colorClass: "bg-accent-purple text-white" },
-  { label: "נשוא+נושא סתמי", colorClass: "bg-warning text-warning-foreground" },
-];
-
-const roleStyleMap: Record<Role, string> = {
-  "נשוא": "bg-destructive/15 text-destructive border-destructive/30",
-  "נושא": "bg-primary/15 text-primary border-primary/30",
-  "נשוא+נושא": "bg-accent-purple/15 text-accent-purple border-accent-purple/30",
-  "נשוא+נושא סתמי": "bg-warning/15 text-warning border-warning/30",
-};
-
-// ─── Component ──────────────────────────────────────────────────────────────
+import { sentences, roles, roleStyleMap, wordGroups, calculateGrade, type Role } from "@/lib/subject-predicate-data";
 
 interface SubjectPredicateTaskProps {
   taskId: string;
@@ -49,7 +15,6 @@ interface SubjectPredicateTaskProps {
 }
 
 const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) => {
-  // selections[sentenceIdx][wordIdx] = Role
   const [selections, setSelections] = useState<Record<number, Record<number, Role>>>({});
   const [openPopover, setOpenPopover] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -59,17 +24,26 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
   const [pasteCount, setPasteCount] = useState(0);
   const startTimeRef = useRef(Date.now());
 
-  const handlePaste = useCallback(() => {
-    setPasteCount((prev) => prev + 1);
-  }, []);
+  const handlePaste = useCallback(() => setPasteCount((p) => p + 1), []);
 
   const selectRole = (sentenceIdx: number, wordIdx: number, role: Role) => {
     setSelections((prev) => {
       const sentence = { ...(prev[sentenceIdx] || {}) };
-      if (sentence[wordIdx] === role) {
-        delete sentence[wordIdx];
+      const group = wordGroups[sentenceIdx]?.[wordIdx];
+
+      if (group) {
+        // Toggle group: if already this role, clear all; otherwise set all
+        if (sentence[wordIdx] === role) {
+          group.forEach((wi) => delete sentence[wi]);
+        } else {
+          group.forEach((wi) => (sentence[wi] = role));
+        }
       } else {
-        sentence[wordIdx] = role;
+        if (sentence[wordIdx] === role) {
+          delete sentence[wordIdx];
+        } else {
+          sentence[wordIdx] = role;
+        }
       }
       return { ...prev, [sentenceIdx]: sentence };
     });
@@ -79,20 +53,25 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
   const clearWord = (sentenceIdx: number, wordIdx: number) => {
     setSelections((prev) => {
       const sentence = { ...(prev[sentenceIdx] || {}) };
-      delete sentence[wordIdx];
+      const group = wordGroups[sentenceIdx]?.[wordIdx];
+      if (group) {
+        group.forEach((wi) => delete sentence[wi]);
+      } else {
+        delete sentence[wordIdx];
+      }
       return { ...prev, [sentenceIdx]: sentence };
     });
   };
 
   const totalSelections = Object.values(selections).reduce(
-    (sum, s) => sum + Object.keys(s).length,
-    0
+    (sum, s) => sum + Object.keys(s).length, 0
   );
 
   const handleSubmit = async () => {
     if (!studentName.trim()) return;
     setIsSubmitting(true);
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
+    const grade = calculateGrade(selections);
 
     const { error } = await supabase.from("submissions").insert({
       student_name: studentName.trim(),
@@ -101,6 +80,7 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
       time_spent_seconds: timeSpent,
       paste_count: pasteCount,
       task_id: taskId,
+      grade,
     });
 
     setIsSubmitting(false);
@@ -112,24 +92,21 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
     }
 
     setIsSubmitted(true);
-    toast({ title: "המשימה הוגשה בהצלחה ✅" });
+    toast({ title: `המשימה הוגשה בהצלחה ✅ ציון: ${grade}` });
   };
 
   return (
     <div className="min-h-screen bg-background pb-safe">
-      {/* Header */}
       <div className="sticky top-0 z-50 bg-primary shadow-md px-4 py-3 text-center">
         <h1 className="text-lg font-bold text-primary-foreground">{taskTitle}</h1>
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
-        {/* Subtitle */}
         <div className="text-center space-y-1">
           <h2 className="text-xl font-bold text-foreground">סמנו בכל משפט את הנושא ואת הנשוא</h2>
           <p className="text-sm text-muted-foreground">לחצו על כל מילה כדי לבחור את תפקידה</p>
         </div>
 
-        {/* Info box */}
         <Card className="border-r-4 border-r-primary bg-muted/50">
           <CardContent className="p-4 space-y-2">
             <div className="flex items-center gap-2">
@@ -142,28 +119,23 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
             <p className="text-sm font-semibold text-foreground mt-2">מתי נזהה נושא סתמי?</p>
             <p className="text-sm text-muted-foreground">
               <strong className="text-foreground">1.</strong> פועל ברבים ללא ציון עושה הפעולה —{" "}
-              <span className="text-xs">למשל: "בישראל <b>נוהגים</b> בצד ימין" — מי נוהגים? לא צוין → נושא סתמי</span>
+              <span className="text-xs">למשל: &quot;בישראל <b>נוהגים</b> בצד ימין&quot; — מי נוהגים? לא צוין → נושא סתמי</span>
             </p>
             <p className="text-sm text-muted-foreground">
               <strong className="text-foreground">2.</strong> פועל סביל + מילת יחס —{" "}
-              <span className="text-xs">למשל: "בישיבת המועצה <b>הוחלט</b> על סגירת הרחוב" — מי החליט? לא צוין → נושא סתמי</span>
+              <span className="text-xs">למשל: &quot;בישיבת המועצה <b>הוחלט</b> על סגירת הרחוב&quot; — מי החליט? לא צוין → נושא סתמי</span>
             </p>
           </CardContent>
         </Card>
 
-        {/* Legend */}
         <div className="flex flex-wrap gap-2 justify-center">
           {roles.map((r) => (
-            <span
-              key={r.label}
-              className={`text-xs px-2.5 py-1 rounded-full font-medium ${r.colorClass}`}
-            >
+            <span key={r.label} className={`text-xs px-2.5 py-1 rounded-full font-medium ${r.colorClass}`}>
               {r.label}
             </span>
           ))}
         </div>
 
-        {/* Sentences */}
         <div className="space-y-3">
           {sentences.map((sentence, si) => {
             const words = sentence.split(/\s+/);
@@ -208,11 +180,7 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
                               {word}
                             </button>
                           </PopoverTrigger>
-                          <PopoverContent
-                            side="top"
-                            className="w-auto p-2 flex flex-col gap-1"
-                            dir="rtl"
-                          >
+                          <PopoverContent side="top" className="w-auto p-2 flex flex-col gap-1" dir="rtl">
                             {roles.map((r) => (
                               <button
                                 key={r.label}
@@ -233,20 +201,13 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
           })}
         </div>
 
-        {/* Submit area */}
         {!isSubmitted ? (
           <div className="text-center pt-4">
-            <Button
-              size="lg"
-              onClick={() => setShowNameModal(true)}
-              className="gap-2 text-base px-8"
-            >
+            <Button size="lg" onClick={() => setShowNameModal(true)} className="gap-2 text-base px-8">
               <Send className="h-4 w-4" />
               הגשת המשימה
             </Button>
-            <p className="text-xs text-muted-foreground mt-2">
-              סימנתם {totalSelections} מילים
-            </p>
+            <p className="text-xs text-muted-foreground mt-2">סימנתם {totalSelections} מילים</p>
           </div>
         ) : (
           <Card className="bg-primary/5 border-primary/20">
@@ -258,7 +219,6 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
         )}
       </div>
 
-      {/* Name Modal */}
       <Dialog open={showNameModal} onOpenChange={setShowNameModal}>
         <DialogContent dir="rtl" className="sm:max-w-md">
           <DialogHeader>
@@ -281,9 +241,7 @@ const SubjectPredicateTask = ({ taskId, taskTitle }: SubjectPredicateTaskProps) 
               <Send className="h-4 w-4" />
               {isSubmitting ? "שולח..." : "שליחה"}
             </Button>
-            <Button variant="outline" onClick={() => setShowNameModal(false)}>
-              ביטול
-            </Button>
+            <Button variant="outline" onClick={() => setShowNameModal(false)}>ביטול</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
