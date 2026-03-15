@@ -292,8 +292,12 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
               const isSelected = selectedIdiom === idiom.id;
               const isFlashing = correctFlash === idiom.id;
 
-              // Highlight the idiom within the example sentence
-              const parts = idiom.example.split(new RegExp(`(${idiom.idiom.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'i'));
+              // Split example by the exact highlight text
+              const hlText = idiom.highlight;
+              const hlIdx = idiom.example.indexOf(hlText);
+              const before = hlIdx >= 0 ? idiom.example.slice(0, hlIdx) : idiom.example;
+              const hl = hlIdx >= 0 ? hlText : "";
+              const after = hlIdx >= 0 ? idiom.example.slice(hlIdx + hlText.length) : "";
 
               return (
                 <button
@@ -314,18 +318,13 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
                 >
                   <span className={`text-sm leading-relaxed ${isMatched ? "text-success" : "text-foreground"}`}>
                     {isMatched && <CheckCircle2 className="h-4 w-4 inline ml-1.5 text-success align-text-bottom" />}
-                    {parts.map((part, pi) => {
-                      // Check if this part matches the idiom (case-insensitive for Hebrew)
-                      const isIdiomPart = part.replace(/[.*+?^${}()|[\]\\]/g, '').trim() === idiom.idiom.replace(/[.*+?^${}()|[\]\\]/g, '').trim();
-                      if (isIdiomPart) {
-                        return (
-                          <span key={pi} className={`font-bold ${isMatched ? "text-success" : isSelected ? "text-primary" : "text-primary"} underline decoration-2 underline-offset-2`}>
-                            {part}
-                          </span>
-                        );
-                      }
-                      return <span key={pi}>{part}</span>;
-                    })}
+                    {before}
+                    {hl && (
+                      <span className={`font-bold ${isMatched ? "text-success" : "text-primary"}`}>
+                        {hl}
+                      </span>
+                    )}
+                    {after}
                   </span>
                 </button>
               );
