@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lazy, Suspense } from "react";
 const SubjectPredicateFeedback = lazy(() => import("./SubjectPredicateFeedback"));
 const GrammarRootsFeedback = lazy(() => import("./GrammarRootsFeedback"));
+const IdiomsMatchFeedback = lazy(() => import("./IdiomsMatchFeedback"));
 
 const FeedbackRouter = () => {
   const { taskId, submissionId } = useParams<{ taskId: string; submissionId: string }>();
