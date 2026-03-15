@@ -169,11 +169,11 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
             <ul className="space-y-3 text-muted-foreground text-sm leading-relaxed">
               <li className="flex items-start gap-2">
                 <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
-                <span>לחצו על <strong className="text-foreground">ניב</strong> מהצד הימני</span>
+                <span>לחצו על <strong className="text-foreground">משפט</strong> שמכיל ניב (הניב מודגש בתוך המשפט)</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
-                <span>לחצו על <strong className="text-foreground">המשמעות</strong> המתאימה מהצד השמאלי</span>
+                <span>לחצו על <strong className="text-foreground">המשמעות</strong> המתאימה לניב שבמשפט</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
@@ -181,7 +181,7 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
               </li>
             </ul>
             <p className="text-xs text-muted-foreground border-t pt-3">
-              המשחק מחולק לסבבים. בכל סבב 5-6 ניבים להתאמה. בסיום — הציון יחושב אוטומטית.
+              המשחק מחולק לסבבים. בכל סבב 5-6 משפטים עם ניבים להתאמה. בסיום — הציון יחושב אוטומטית.
             </p>
           </div>
 
