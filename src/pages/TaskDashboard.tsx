@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import MergeWritingDashboard from "./MergeWritingDashboard";
 import GrammarRootsDashboard from "./GrammarRootsDashboard";
 import SubjectPredicateDashboard from "./SubjectPredicateDashboard";
+import IdiomsMatchDashboard from "./IdiomsMatchDashboard";
 import GenericTaskDashboard from "@/components/GenericTaskDashboard";
 
 const TaskDashboard = () => {
@@ -45,6 +46,10 @@ const TaskDashboard = () => {
 
   if ((task as any).route === "subject-predicate") {
     return <SubjectPredicateDashboard taskId={taskId!} taskTitle={task.title} />;
+  }
+
+  if ((task as any).route === "idioms-match") {
+    return <IdiomsMatchDashboard taskId={taskId!} taskTitle={task.title} />;
   }
 
   return <GenericTaskDashboard taskId={taskId!} taskTitle={task.title} />;
