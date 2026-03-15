@@ -48,6 +48,10 @@ const TaskDashboard = () => {
     return <SubjectPredicateDashboard taskId={taskId!} taskTitle={task.title} />;
   }
 
+  if ((task as any).route === "idioms-match") {
+    return <IdiomsMatchDashboard taskId={taskId!} taskTitle={task.title} />;
+  }
+
   return <GenericTaskDashboard taskId={taskId!} taskTitle={task.title} />;
 };
 

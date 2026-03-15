@@ -25,7 +25,7 @@ const FeedbackRouter = () => {
 
   return (
     <Suspense fallback={loading}>
-      {task?.route === "grammar-roots" ? <GrammarRootsFeedback /> : <SubjectPredicateFeedback />}
+      {task?.route === "grammar-roots" ? <GrammarRootsFeedback /> : task?.route === "idioms-match" ? <IdiomsMatchFeedback /> : <SubjectPredicateFeedback />}
     </Suspense>
   );
 };
