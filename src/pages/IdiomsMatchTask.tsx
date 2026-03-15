@@ -281,17 +281,19 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
         <Progress value={progressPercent} className="h-2" />
       </div>
 
-      {/* Game area */}
-      <div className="flex-1 p-4 overflow-auto">
-        {/* Mobile: stacked, Desktop: side by side */}
-        <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Idioms column */}
+      {/* Game area — mobile-first stacked layout */}
+      <div className="flex-1 p-3 sm:p-4 overflow-auto">
+        <div className="max-w-3xl mx-auto space-y-4">
+          {/* Sentences with idioms */}
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2 text-center">הניב</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground mb-1 text-center">לחצו על משפט ואז בחרו את המשמעות</h3>
             {currentIdioms.map((idiom) => {
               const isMatched = matchedPairs.has(idiom.id);
               const isSelected = selectedIdiom === idiom.id;
               const isFlashing = correctFlash === idiom.id;
+
+              // Highlight the idiom within the example sentence
+              const parts = idiom.example.split(new RegExp(`(${idiom.idiom.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'i'));
 
               return (
                 <button
@@ -299,27 +301,46 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
                   disabled={isMatched}
                   onClick={() => handleIdiomClick(idiom.id)}
                   className={`
-                    w-full min-h-[52px] px-4 py-3 rounded-xl text-base font-medium text-right
-                    transition-all duration-200 active:scale-95 border-2
+                    w-full min-h-[56px] px-4 py-3 rounded-xl text-right
+                    transition-all duration-200 active:scale-[0.97] border-2
                     ${isMatched
-                      ? "bg-success/15 border-success/40 text-success cursor-default"
+                      ? "bg-success/15 border-success/40 cursor-default"
                       : isSelected
-                        ? "bg-primary/15 border-primary shadow-md scale-[1.02]"
+                        ? "bg-primary/10 border-primary shadow-md scale-[1.01]"
                         : "bg-card border-border hover:border-primary/50 hover:bg-primary/5"
                     }
                     ${isFlashing ? "animate-[correct-pop_0.5s_ease-out]" : ""}
                   `}
                 >
-                  {isMatched && <CheckCircle2 className="h-4 w-4 inline ml-2 text-success" />}
-                  {idiom.idiom}
+                  <span className={`text-sm leading-relaxed ${isMatched ? "text-success" : "text-foreground"}`}>
+                    {isMatched && <CheckCircle2 className="h-4 w-4 inline ml-1.5 text-success align-text-bottom" />}
+                    {parts.map((part, pi) => {
+                      // Check if this part matches the idiom (case-insensitive for Hebrew)
+                      const isIdiomPart = part.replace(/[.*+?^${}()|[\]\\]/g, '').trim() === idiom.idiom.replace(/[.*+?^${}()|[\]\\]/g, '').trim();
+                      if (isIdiomPart) {
+                        return (
+                          <span key={pi} className={`font-bold ${isMatched ? "text-success" : isSelected ? "text-primary" : "text-primary"} underline decoration-2 underline-offset-2`}>
+                            {part}
+                          </span>
+                        );
+                      }
+                      return <span key={pi}>{part}</span>;
+                    })}
+                  </span>
                 </button>
               );
             })}
           </div>
 
-          {/* Meanings column */}
+          {/* Divider */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 border-t border-border" />
+            <span className="text-xs text-muted-foreground font-medium">בחרו את המשמעות</span>
+            <div className="flex-1 border-t border-border" />
+          </div>
+
+          {/* Meanings */}
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2 text-center">המשמעות</h3>
             {shuffledMeanings.map((meaning) => {
               const matchedIdiom = currentIdioms.find(i => i.meaning === meaning && matchedPairs.has(i.id));
               const isMatched = !!matchedIdiom;
@@ -332,7 +353,7 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
                   onClick={() => handleMeaningClick(meaning)}
                   className={`
                     w-full min-h-[52px] px-4 py-3 rounded-xl text-sm text-right leading-relaxed
-                    transition-all duration-200 active:scale-95 border-2
+                    transition-all duration-200 active:scale-[0.97] border-2
                     ${isMatched
                       ? "bg-success/15 border-success/40 text-success cursor-default"
                       : selectedIdiom !== null
@@ -342,7 +363,7 @@ const IdiomsMatchTask = ({ taskId, taskTitle }: IdiomsMatchTaskProps) => {
                     ${isShaking ? "animate-[shake_0.4s_ease-in-out]" : ""}
                   `}
                 >
-                  {isMatched && <CheckCircle2 className="h-4 w-4 inline ml-2 text-success" />}
+                  {isMatched && <CheckCircle2 className="h-4 w-4 inline ml-1.5 text-success align-text-bottom" />}
                   {meaning}
                 </button>
               );
