@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import MergeWritingDashboard from "./MergeWritingDashboard";
 import GrammarRootsDashboard from "./GrammarRootsDashboard";
 import SubjectPredicateDashboard from "./SubjectPredicateDashboard";
+import IdiomsMatchDashboard from "./IdiomsMatchDashboard";
 import GenericTaskDashboard from "@/components/GenericTaskDashboard";
 
 const TaskDashboard = () => {
