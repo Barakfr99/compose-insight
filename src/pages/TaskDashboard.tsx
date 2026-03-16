@@ -53,6 +53,10 @@ const TaskDashboard = () => {
     return <IdiomsMatchDashboard taskId={taskId!} taskTitle={task.title} />;
   }
 
+  if ((task as any).route === "halachmim") {
+    return <HalachmimDashboard taskId={taskId!} taskTitle={task.title} />;
+  }
+
   return <GenericTaskDashboard taskId={taskId!} taskTitle={task.title} />;
 };
 

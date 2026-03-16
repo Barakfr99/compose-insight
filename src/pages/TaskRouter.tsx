@@ -7,6 +7,7 @@ import MergeWritingTask from "./MergeWritingTask";
 import GrammarRootsTask from "./GrammarRootsTask";
 import SubjectPredicateTask from "./SubjectPredicateTask";
 import IdiomsMatchTask from "./IdiomsMatchTask";
+import HalachmimTask from "./HalachmimTask";
 
 const customRouteMap: Record<string, React.ComponentType<{ taskId: string; taskTitle: string }>> = {
   discipline: DisciplineTask,
@@ -14,6 +15,7 @@ const customRouteMap: Record<string, React.ComponentType<{ taskId: string; taskT
   "grammar-roots": GrammarRootsTask,
   "subject-predicate": SubjectPredicateTask,
   "idioms-match": IdiomsMatchTask,
+  "halachmim": HalachmimTask,
 };
 
 const TaskRouter = () => {
