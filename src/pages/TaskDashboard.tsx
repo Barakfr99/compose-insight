@@ -5,6 +5,7 @@ import MergeWritingDashboard from "./MergeWritingDashboard";
 import GrammarRootsDashboard from "./GrammarRootsDashboard";
 import SubjectPredicateDashboard from "./SubjectPredicateDashboard";
 import IdiomsMatchDashboard from "./IdiomsMatchDashboard";
+import HalachmimDashboard from "./HalachmimDashboard";
 import GenericTaskDashboard from "@/components/GenericTaskDashboard";
 
 const TaskDashboard = () => {
