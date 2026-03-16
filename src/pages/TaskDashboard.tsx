@@ -5,6 +5,7 @@ import MergeWritingDashboard from "./MergeWritingDashboard";
 import GrammarRootsDashboard from "./GrammarRootsDashboard";
 import SubjectPredicateDashboard from "./SubjectPredicateDashboard";
 import IdiomsMatchDashboard from "./IdiomsMatchDashboard";
+import HalachmimDashboard from "./HalachmimDashboard";
 import GenericTaskDashboard from "@/components/GenericTaskDashboard";
 
 const TaskDashboard = () => {
@@ -50,6 +51,10 @@ const TaskDashboard = () => {
 
   if ((task as any).route === "idioms-match") {
     return <IdiomsMatchDashboard taskId={taskId!} taskTitle={task.title} />;
+  }
+
+  if ((task as any).route === "halachmim") {
+    return <HalachmimDashboard taskId={taskId!} taskTitle={task.title} />;
   }
 
   return <GenericTaskDashboard taskId={taskId!} taskTitle={task.title} />;
