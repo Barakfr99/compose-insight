@@ -176,22 +176,20 @@ const HalachmimTask = ({ taskId, taskTitle }: HalachmimTaskProps) => {
             <h1 className="text-3xl md:text-4xl font-bold text-foreground">{taskTitle}</h1>
           </div>
 
-          <div className="bg-card rounded-2xl p-5 shadow-lg border text-right space-y-3">
-            <h2 className="text-base font-semibold text-foreground">איך זה עובד?</h2>
-            <ul className="space-y-2 text-muted-foreground text-sm leading-relaxed">
-              <li className="flex items-start gap-2">
-                <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
-                <span>תראו <strong className="text-foreground">מילה מולחמת</strong> ותנסו לכתוב את שתי המילים שמרכיבות אותה</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
-                <span>לאחר 3 ניסיונות תקבלו <strong className="text-foreground">אפשרויות לבחירה</strong></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
-                <span>ציון גבוה יותר ל<strong className="text-foreground">פתרון בניסיון הראשון!</strong></span>
-              </li>
-            </ul>
+          <div className="bg-card rounded-2xl shadow-lg border overflow-hidden">
+            <div className="aspect-video w-full">
+              <iframe
+                src="https://www.youtube.com/embed/oI0JE91qNP8"
+                title="שיעור הלחמים"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <div className="p-4 text-right space-y-2">
+              <h2 className="text-base font-semibold text-foreground">📺 צפו בשיעור ולאחר מכן התחילו את התרגיל</h2>
+              <p className="text-sm text-muted-foreground">לאחר הצפייה, לחצו על כפתור ההתחלה למטה</p>
+            </div>
           </div>
 
           <Button
